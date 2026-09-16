@@ -1,0 +1,4 @@
+modelo,ROC_AUC,PR_AUC,lift_PR,Brier,BSS,pendiente_cal,intercepto_cal,ECE,ROC_AUC_peor_bloque
+ElasticNet,0.653,0.21,1.849,0.098,0.031,1.011,-0.177,0.021,0.637
+RandomForest,0.661,0.209,1.841,0.098,0.026,0.934,-0.243,0.028,0.64
+XGBoost,0.65,0.201,1.768,0.098,0.024,0.945,-0.201,0.023,0.63

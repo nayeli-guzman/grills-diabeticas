@@ -1,0 +1,24 @@
+Dimensión,Métrica,Criterio,Resultado,Cumple
+Técnica,ROC-AUC,≥ 0.66,0.665 (peor 0.637),✔
+Técnica,PR-AUC / lift,≥ 0.20 y ≥ 1.8×,0.215 / 1.89×,✔
+Técnica,Brier,≤ 0.095,0.0970 (BSS 0.037),✘
+Técnica,Pendiente de calibración,"[0.85, 1.15]",1.03 (rango 0.80–1.27),✔
+Técnica,Intercepto de calibración,"[−0.15, 0.15]",-0.036,✔
+Técnica,ECE,≤ 0.02,0.0178,✔
+Técnica,Latencia p95,"< 1,000 ms",3.5 ms,✔
+Decisión,Beneficio neto (DCA),≥ referencias en 0.05–0.30,supera en 100% del rango,✔
+Decisión,Costo esperado (base),< mín(referencias),"ahorro US$24,254 / 1,000 altas",✔
+Decisión,Costo esperado (sensibilidad e),"< mín(referencias) para e ∈ {0.12, 0.18, 0.38}","14,596 / 24,254 / -15,250",✘
+Decisión,Impacto proyectado,≥ 5%,2.9%,✘
+Decisión,Tasa de Alto por bloque,≤ 15%,8.3%,✔
+Decisión,Tiempo de respuesta,≥ 90% contactados ≤ 7 días,N/A (despliegue),—
+Social,Razón FNR edad (≥70 vs <70),"[0.87, 1.15]",≥70: 1.08 [1.07–1.11],✔
+Social,Razón FNR raza (vs Caucasian),"[0.87, 1.15], ≥100 reingresos",AfricanAmerican: 0.98; Desconocido: 1.11; Hispanic: 0.92; Other: 1.03,✔
+Social,Razón de selección (80%),≥ 0.80,0.24,✘
+Social,Calibración por subgrupo,"pendiente [0.8, 1.2], |int.| ≤ 0.2",ver tabla de equidad,✘
+Social,Cobertura,≥ 98%,100.0%,✔
+Social,Incertidumbre Alta,≤ 15%,21.6%,✘
+Social,Reingreso en categoría Bajo,< 8%,7.1%,✔
+Social,Explicabilidad top-3,100%,100.0%,✔
+Monitoreo,Reentrenamientos disparados (E4),informativo,1,—
+Monitoreo,Variables con PSI > 0.25 (vs B1),informativo,"admission_type_grp, num_lab_procedures, number_diagnoses_capped",—
