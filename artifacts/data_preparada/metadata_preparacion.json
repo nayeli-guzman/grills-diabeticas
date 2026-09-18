@@ -18,7 +18,22 @@
     "citoglipton",
     "payer_code"
   ],
-  "label_delay_encuentros": 1000,
+  "label_delay_encuentros": 2000,
+  "label_delay_inicial": 1000,
+  "label_delay_por_periodo_train": {
+    "0": 900.0,
+    "1": 1000.0,
+    "2": 900.0,
+    "3": 900.0,
+    "4": 1000.0,
+    "5": 900.0,
+    "6": 1000.0,
+    "7": 800.0,
+    "8": 1300.0,
+    "9": 1500.0,
+    "10": 1600.0,
+    "11": 1700.0
+  },
   "ventana_contexto": 3000,
   "split_periodos": {
     "train": [
@@ -136,7 +151,7 @@
   },
   "conjuntos": {
     "train": {
-      "filas": 58681,
+      "filas": 57709,
       "tasa_<30": 0.1167,
       "periodos": [
         0,
@@ -155,8 +170,8 @@
       "archivo": "artifacts\\data_preparada\\train.csv"
     },
     "validacion": {
-      "filas": 18886,
-      "tasa_<30": 0.1117,
+      "filas": 17912,
+      "tasa_<30": 0.111,
       "periodos": [
         12,
         13,
@@ -176,5 +191,72 @@
       ],
       "archivo": "artifacts\\data_preparada\\test.csv"
     }
-  }
+  },
+  "auditoria_leakage": [
+    {
+      "prueba": "Disponibilidad al alta",
+      "resultado": "ninguna variable posterior al alta; columnas prohibidas ausentes",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Cribado univariado",
+      "resultado": "AUC máx. = 0.605 (service_utilization)",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Identificadores",
+      "resultado": "AUC máx. = 0.522; excluidos de los predictores",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Separación perfecta en categorías",
+      "resultado": "0 categorías",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Latencia de etiqueta",
+      "resultado": "embargo 1,000 → 2,000; reingresos de train que cruzan el corte 11 → 0",
+      "estado": "Corregido"
+    },
+    {
+      "prueba": "Variables rezagadas sin futuro",
+      "resultado": "prueba de truncamiento (Sección 8)",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Filas idénticas entre conjuntos",
+      "resultado": "val: 0 · test: 0",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Etiquetas permutadas",
+      "resultado": "AUC val = 0.500",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Desempeño plausible",
+      "resultado": "AUC val = 0.664 · test = 0.669",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Pacientes vistos vs nuevos",
+      "resultado": "AUC test 0.650 vs 0.662",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Variables de contexto (proxy del tiempo)",
+      "resultado": "AUC val 0.664 → 0.656; brecha train−val 0.079 → 0.117",
+      "estado": "No usar"
+    },
+    {
+      "prueba": "Dominancia de una variable",
+      "resultado": "number_inpatient = 38% de la importancia",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Decisiones del analista",
+      "resultado": "todas reproducibles solo con train",
+      "estado": "OK"
+    }
+  ]
 }
