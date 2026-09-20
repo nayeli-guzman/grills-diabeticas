@@ -1,0 +1,18 @@
+\begin{table}[H]
+\centering\small
+\begin{tabular}{lcccc}
+\toprule
+Estrategia & ROC-AUC & PR-AUC & Brier & pend. cal. \\
+\midrule
+\textbf{E3 deslizante S=3} & 0.680 & 0.226 & 0.095 & 1.123 \\
+E2 expansiva & 0.676 & 0.223 & 0.095 & 1.075 \\
+E3 deslizante S=2 & 0.676 & 0.222 & 0.095 & 1.053 \\
+E4 disparador & 0.674 & 0.222 & 0.095 & 1.166 \\
+E3 deslizante S=5 & 0.679 & 0.219 & 0.095 & 1.039 \\
+E3 deslizante S=1 & 0.667 & 0.214 & 0.095 & 0.918 \\
+E1 estático & 0.662 & 0.212 & 0.097 & 1.028 \\
+\bottomrule
+\end{tabular}
+\caption{Comparación de estrategias de adaptación sobre bloques comunes (6--10). \textbf{E3 deslizante $S=3$} obtiene el mejor PR-AUC promedio entre E1/E2/E3 y se elige como estrategia desplegada para la capa de decisión --- coincide con la ventana de reentrenamiento de tamaño 3 propuesta originalmente en el plan de trabajo. E4 (disparador) se muestra por separado por ser condicional a los reentrenamientos que dispara (1 evento en el horizonte evaluado).}
+\label{tab:estrategias}
+\end{table}

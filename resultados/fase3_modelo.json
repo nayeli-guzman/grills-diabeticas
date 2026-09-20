@@ -1,5 +1,5 @@
 {
-  "modelo_principal": "ElasticNet",
+  "modelo_principal": "RandomForest",
   "mejores": {
     "ElasticNet": {
       "C": 0.01,
@@ -10,7 +10,7 @@
       "min_samples_leaf": 20
     },
     "XGBoost": {
-      "max_depth": 5,
+      "max_depth": 3,
       "n_estimators": 200
     }
   }

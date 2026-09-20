@@ -1,0 +1,14 @@
+\begin{table}[H]
+\centering\small
+\begin{tabular}{lccccccc}
+\toprule
+Modelo & ROC-AUC & PR-AUC & lift & Brier & BSS & pend. cal. & ECE \\
+\midrule
+ElasticNet & 0.652 & 0.213 & 1.87$\times$ & 0.098 & 0.031 & 1.014 & 0.023 \\
+\textbf{RandomForest} & 0.664 & 0.215 & 1.89$\times$ & 0.098 & 0.030 & 1.017 & 0.027 \\
+XGBoost & 0.653 & 0.192 & 1.69$\times$ & 0.099 & 0.020 & 0.774 & 0.028 \\
+\bottomrule
+\end{tabular}
+\caption{Comparación de modelos, experimento E1 (estático, entrenado en bloques 1--2, evaluado sin reentrenar en bloques 3--10). Modelo principal en negrita.}
+\label{tab:modelos}
+\end{table}

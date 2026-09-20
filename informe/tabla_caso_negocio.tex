@@ -1,0 +1,37 @@
+\begin{table}[H]
+\centering\small
+\begin{tabular}{lr}
+\toprule
+Concepto & Valor anual (US\$, 50,000 altas/año) \\
+\midrule
+Costo esperado \textbf{sin} monitoreo (estático, umbral fijo) & \$90,268,164 \\
+Costo esperado \textbf{con} monitoreo adaptativo (E3, $S=3$) & \$89,879,592 \\
+\textbf{Ahorro bruto atribuible al monitoreo de drift} & \textbf{\$388,573} \\
+Costo de mantenimiento del sistema (monitoreo + reentrenos) & \$3,406 \\
+\textbf{Beneficio neto} & \textbf{\$385,167} \\
+Retorno sobre la inversión (ROI) & 113x \\
+\bottomrule
+\end{tabular}
+\caption{Caso de negocio anualizado (supuesto de escala: 50,000 altas/año). El ahorro bruto surge de comparar, bloque a bloque, la misma simulación de costos de la Sección de capa de decisión bajo dos políticas: modelo estático sin monitoreo vs. estrategia adaptativa E3 ($S=3$) disparada por el módulo de drift.}
+\label{tab:caso-negocio}
+\end{table}
+
+\bigskip
+\begin{table}[H]
+\centering\small
+\begin{tabular}{lrrr}
+\toprule
+Bloque (pseudo-año de prueba) & Costo/1,000 sin monitoreo & Costo/1,000 con monitoreo & Ahorro/1,000 \\
+\midrule
+4 & \$1,818,147 & \$1,817,223 & \$924 \\
+5 & \$1,928,541 & \$1,925,351 & \$3,190 \\
+6 & \$1,876,340 & \$1,872,678 & \$3,662 \\
+7 & \$1,768,618 & \$1,762,883 & \$5,735 \\
+8 & \$1,776,977 & \$1,764,123 & \$12,854 \\
+9 & \$1,745,294 & \$1,732,373 & \$12,921 \\
+10 & \$1,723,626 & \$1,708,512 & \$15,114 \\
+\bottomrule
+\end{tabular}
+\caption{Ahorro por cada 1,000 altas, bloque a bloque. El ahorro crece de \$924 (bloque 4) a \$15,114 (bloque 10) --- más de 16$\times$ --- a medida que el drift se acumula y la brecha entre el modelo estático y el adaptativo se agranda: el valor del monitoreo aumenta con el tiempo, no es constante.}
+\label{tab:caso-negocio-bloque}
+\end{table}
