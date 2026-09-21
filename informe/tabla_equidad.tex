@@ -1,0 +1,19 @@
+\begin{table}[H]
+\centering\small
+\begin{tabular}{llrrccc}
+\toprule
+Dimensión & Grupo & n & Reingresos & Tasa reingreso & Razón FNR & Cumple FNR \\
+\midrule
+grupo\_edad & $<$70 & 27,863 & 2,967 & 10.6\% & 1.00 & \ok \\
+grupo\_edad & $\geq$70 & 23,636 & 2,880 & 12.2\% & 1.12 & \ok \\
+race & AfricanAmerican & 9,186 & 1,018 & 11.1\% & 0.97 & \ok \\
+race & Asian & 375 & 31 & 8.3\% & --- & n/e \\
+race & Caucasian & 38,999 & 4,514 & 11.6\% & 1.00 & \ok \\
+race & Desconocido & 1,096 & 102 & 9.3\% & 1.15 & \ok \\
+race & Hispanic & 1,012 & 98 & 9.7\% & --- & n/e \\
+race & Other & 831 & 84 & 10.1\% & --- & n/e \\
+\bottomrule
+\end{tabular}
+\caption{Auditoría de equidad por grupo etario y raza. ``n/e'' = no evaluable ($<$100 reingresos). En la muestra evaluada, todos los grupos evaluables cumplen igualdad de oportunidad (razón de FNR). La razón de \emph{selección} a Alto Riesgo entre subgrupos (regla del 80\%) sí incumple (mínimo observado $\approx$0.38) por el mecanismo de cupo global --- ver discusión en la Sección de criterios no cumplidos.}
+\label{tab:equidad}
+\end{table}

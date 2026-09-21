@@ -1,0 +1,262 @@
+{
+  "objetivo": "target = 1 si readmitted == '<30'",
+  "eje_temporal": "orden por encounter_id (validado en Sección 2); 20 periodos de igual tamaño",
+  "exclusiones": {
+    "discharge_disposition_id (fallecido/hospicio)": [
+      11,
+      13,
+      14,
+      19,
+      20,
+      21
+    ],
+    "gender": "Unknown/Invalid"
+  },
+  "columnas_eliminadas": [
+    "weight",
+    "examide",
+    "citoglipton",
+    "payer_code"
+  ],
+  "label_delay_encuentros": 2000,
+  "label_delay_inicial": 1000,
+  "label_delay_por_periodo_train": {
+    "0": 900.0,
+    "1": 1000.0,
+    "2": 900.0,
+    "3": 900.0,
+    "4": 1000.0,
+    "5": 900.0,
+    "6": 1000.0,
+    "7": 800.0,
+    "8": 1300.0,
+    "9": 1500.0,
+    "10": 1600.0,
+    "11": 1700.0
+  },
+  "ventana_contexto": 3000,
+  "split_periodos": {
+    "train": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "validacion": [
+      12,
+      13,
+      14,
+      15
+    ],
+    "test": [
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  "top_especialidades_train": [
+    "Missing",
+    "InternalMedicine",
+    "Family/GeneralPractice",
+    "Cardiology",
+    "Emergency/Trauma",
+    "Surgery-General",
+    "Nephrology",
+    "Orthopedics-Reconstructive",
+    "Orthopedics",
+    "Pulmonology",
+    "Psychiatry",
+    "Surgery-Cardiovascular/Thoracic",
+    "Urology",
+    "ObstetricsandGynecology",
+    "Surgery-Neuro"
+  ],
+  "variables": {
+    "numericas_estaticas": [
+      "age_num",
+      "time_in_hospital",
+      "num_lab_procedures",
+      "num_procedures",
+      "num_medications",
+      "number_outpatient",
+      "number_emergency",
+      "number_inpatient",
+      "number_diagnoses_capped",
+      "service_utilization",
+      "n_meds_active",
+      "n_meds_changed",
+      "meds_per_day",
+      "labs_per_day",
+      "n_comorbidity_groups",
+      "dm_primary",
+      "dm_complicated",
+      "a1c_tested",
+      "a1c_high",
+      "glu_tested",
+      "glu_high"
+    ],
+    "temporales_por_paciente": [
+      "enc_seq",
+      "is_returning",
+      "prev_readmit30",
+      "hist_n_readmit30",
+      "hist_rate_readmit30",
+      "prev_time_in_hospital",
+      "prev_num_medications",
+      "prev_number_diagnoses_capped",
+      "prev_n_meds_active",
+      "delta_num_medications",
+      "delta_n_meds_active",
+      "roll3_time_in_hospital",
+      "log_gap_prev_encounter",
+      "prev_discharge_snf"
+    ],
+    "categoricas": [
+      "gender",
+      "admission_type_grp",
+      "discharge_grp",
+      "admission_source_grp",
+      "specialty_grp",
+      "diag_1_grp",
+      "diag_2_grp",
+      "diag_3_grp",
+      "max_glu_serum",
+      "A1Cresult",
+      "insulin",
+      "metformin",
+      "glipizide",
+      "glyburide",
+      "pioglitazone",
+      "rosiglitazone",
+      "glimepiride",
+      "change",
+      "diabetesMed"
+    ],
+    "contexto_opcionales": [
+      "ctx_readmit_rate",
+      "ctx_inpatient_mean",
+      "ctx_a1c_rate",
+      "rel_number_diagnoses",
+      "rel_num_medications"
+    ]
+  },
+  "conjuntos": {
+    "train": {
+      "filas": 57709,
+      "tasa_<30": 0.1167,
+      "periodos": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "archivo": "C:\\Users\\jimen\\Downloads\\grills-diabeticas\\data\\processed\\train.csv"
+    },
+    "validacion": {
+      "filas": 17912,
+      "tasa_<30": 0.111,
+      "periodos": [
+        12,
+        13,
+        14,
+        15
+      ],
+      "archivo": "C:\\Users\\jimen\\Downloads\\grills-diabeticas\\data\\processed\\validacion.csv"
+    },
+    "test": {
+      "filas": 19830,
+      "tasa_<30": 0.1087,
+      "periodos": [
+        16,
+        17,
+        18,
+        19
+      ],
+      "archivo": "C:\\Users\\jimen\\Downloads\\grills-diabeticas\\data\\processed\\test.csv"
+    }
+  },
+  "auditoria_leakage": [
+    {
+      "prueba": "Disponibilidad al alta",
+      "resultado": "ninguna variable posterior al alta; columnas prohibidas ausentes",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Cribado univariado",
+      "resultado": "AUC máx. = 0.605 (service_utilization)",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Identificadores",
+      "resultado": "AUC máx. = 0.522; excluidos de los predictores",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Separación perfecta en categorías",
+      "resultado": "0 categorías",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Latencia de etiqueta",
+      "resultado": "embargo 1,000 → 2,000; reingresos de train que cruzan el corte 11 → 0",
+      "estado": "Corregido"
+    },
+    {
+      "prueba": "Variables rezagadas sin futuro",
+      "resultado": "prueba de truncamiento (Sección 8)",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Filas idénticas entre conjuntos",
+      "resultado": "val: 0 · test: 0",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Etiquetas permutadas",
+      "resultado": "AUC val = 0.500",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Desempeño plausible",
+      "resultado": "AUC val = 0.664 · test = 0.669",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Pacientes vistos vs nuevos",
+      "resultado": "AUC test 0.650 vs 0.662",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Variables de contexto (proxy del tiempo)",
+      "resultado": "AUC val 0.664 → 0.656; brecha train−val 0.079 → 0.117",
+      "estado": "No usar"
+    },
+    {
+      "prueba": "Dominancia de una variable",
+      "resultado": "number_inpatient = 38% de la importancia",
+      "estado": "OK"
+    },
+    {
+      "prueba": "Decisiones del analista",
+      "resultado": "todas reproducibles solo con train",
+      "estado": "OK"
+    }
+  ]
+}

@@ -1,3 +1,5 @@
 .venv/
 .DS_Store
 reingreso_diabetes_pipeline.ipynb
+__pycache__/
+*.pyc
