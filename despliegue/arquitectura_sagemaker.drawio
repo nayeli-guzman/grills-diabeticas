@@ -1,0 +1,306 @@
+<mxfile host="65bd71144e">
+    <diagram id="arquitectura-reingreso" name="Arquitectura SageMaker">
+        <mxGraphModel dx="1908" dy="705" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2400" pageHeight="1400" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="ARQUITECTURA PROPUESTA | Predicción de reingreso hospitalario a 30 días" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=29;fontStyle=1;fontColor=#14253d;" parent="1" vertex="1">
+                    <mxGeometry x="50" y="24" width="2180" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="subtitle" value="SageMaker AI · inferencia privada · etiquetas maduras · retraining E3 con aprobación clínica" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=17;fontColor=#5a6b7d;" parent="1" vertex="1">
+                    <mxGeometry x="50" y="72" width="2180" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="hospital-bg" value="HOSPITAL / RED CLÍNICA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eef8f3;strokeColor=#9ac9b1;fontColor=#17654a;fontSize=19;fontStyle=1;verticalAlign=top;align=left;spacingTop=20;spacingLeft=20;arcSize=2;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="125" width="350" height="1000" as="geometry"/>
+                </mxCell>
+                <mxCell id="online-bg" value="AWS · INFERENCIA EN TIEMPO REAL / VPC PRIVADA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eef5fc;strokeColor=#92b7df;fontColor=#164f83;fontSize=19;fontStyle=1;verticalAlign=top;align=left;spacingTop=20;spacingLeft=20;arcSize=2;" parent="1" vertex="1">
+                    <mxGeometry x="420" y="125" width="1110" height="410" as="geometry"/>
+                </mxCell>
+                <mxCell id="data-bg" value="AWS · INGESTA, DATOS Y ETIQUETAS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f0fb;strokeColor=#bba4d9;fontColor=#65438d;fontSize=19;fontStyle=1;verticalAlign=top;align=left;spacingTop=20;spacingLeft=20;arcSize=2;" parent="1" vertex="1">
+                    <mxGeometry x="420" y="565" width="1110" height="560" as="geometry"/>
+                </mxCell>
+                <mxCell id="mlops-bg" value="AWS · MONITOREO Y CICLO DE VIDA DEL MODELO" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff5e9;strokeColor=#e5ba80;fontColor=#96570b;fontSize=19;fontStyle=1;verticalAlign=top;align=left;spacingTop=20;spacingLeft=20;arcSize=2;" parent="1" vertex="1">
+                    <mxGeometry x="1700" y="120" width="790" height="1000" as="geometry"/>
+                </mxCell>
+                <mxCell id="security-bg" value="CONTROLES TRANSVERSALES  ·  IAM mínimo privilegio  ·  KMS / SSE-KMS  ·  TLS y VPC endpoints  ·  CloudTrail  ·  logs sin datos clínicos  ·  alarmas y rollback" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f3f6;strokeColor=#aeb8c3;fontColor=#35465c;fontSize=17;fontStyle=1;align=center;verticalAlign=middle;arcSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="420" y="1150" width="1930" height="92" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend" value="Azul: inferencia  ·  Morado: datos  ·  Naranja: MLOps  ·  Verde: hospital" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=15;fontColor=#68788a;" parent="1" vertex="1">
+                    <mxGeometry x="50" y="1260" width="1200" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="safety-note" value="Uso clínico condicionado a resolver la brecha de equidad y validar desempeño local. Ante datos o servicios no confiables: revisión humana." style="text;html=1;align=right;verticalAlign=middle;whiteSpace=wrap;fontSize=15;fontStyle=2;fontColor=#9d432d;" parent="1" vertex="1">
+                    <mxGeometry x="1130" y="1255" width="1210" height="43" as="geometry"/>
+                </mxCell>
+                <mxCell id="ehr" value="&lt;b&gt;Historia clínica&lt;/b&gt;&lt;br&gt;Altas y características al alta" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d8efe2;strokeColor=#5fa783;fontColor=#173f31;fontSize=18;spacing=12;arcSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="82" y="205" width="265" height="94" as="geometry"/>
+                </mxCell>
+                <mxCell id="clinicians" value="&lt;b&gt;Equipo clínico&lt;/b&gt;&lt;br&gt;Score, riesgo e incertidumbre" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d8efe2;strokeColor=#5fa783;fontColor=#173f31;fontSize=18;spacing=12;arcSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="82" y="395" width="265" height="94" as="geometry"/>
+                </mxCell>
+                <mxCell id="admissions" value="&lt;b&gt;Altas y admisiones&lt;/b&gt;&lt;br&gt;Lotes diarios + correcciones" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d8efe2;strokeColor=#5fa783;fontColor=#173f31;fontSize=18;spacing=12;arcSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="82" y="675" width="265" height="94" as="geometry"/>
+                </mxCell>
+                <mxCell id="hospital-link" value="VPN o Direct Connect" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9ac9b1;fontColor=#17654a;fontSize=15;spacing=9;arcSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="92" y="866" width="245" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="api" value="&lt;b&gt;API Gateway REST&lt;/b&gt;&lt;br&gt;Privada + autenticación" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dcecff;strokeColor=#558dc9;fontColor=#173c64;fontSize=17;spacing=12;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="466" y="235" width="230" height="92" as="geometry"/>
+                </mxCell>
+                <mxCell id="lambda" value="&lt;b&gt;AWS Lambda&lt;/b&gt;&lt;br&gt;Contrato, historial y as-of" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dcecff;strokeColor=#558dc9;fontColor=#173c64;fontSize=17;spacing=12;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="736" y="235" width="255" height="92" as="geometry"/>
+                </mxCell>
+                <mxCell id="endpoint" value="&lt;b&gt;SageMaker AI Endpoint&lt;/b&gt;&lt;br&gt;Modelo + calibrador&lt;br&gt;Mínimo 2 instancias / 2 AZ" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cde2fb;strokeColor=#3975b8;fontColor=#123b66;fontSize=17;fontStyle=0;spacing=11;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="1072" y="222" width="306" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="ddb" value="&lt;b&gt;DynamoDB&lt;/b&gt;&lt;br&gt;Historial online conocido" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e4effd;strokeColor=#74a1d1;fontColor=#173c64;fontSize=17;spacing=10;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="755" y="398" width="220" height="85" as="geometry"/>
+                </mxCell>
+                <mxCell id="transfer" value="&lt;b&gt;Transfer Family&lt;/b&gt;&lt;br&gt;SFTP interno / manifest" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eadff8;strokeColor=#9c79c7;fontColor=#513476;fontSize=17;spacing=11;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="455" y="656" width="216" height="91" as="geometry"/>
+                </mxCell>
+                <mxCell id="raw" value="&lt;b&gt;S3 raw&lt;/b&gt;&lt;br&gt;Eventos inmutables" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eadff8;strokeColor=#9c79c7;fontColor=#513476;fontSize=17;spacing=10;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="706" y="656" width="200" height="91" as="geometry"/>
+                </mxCell>
+                <mxCell id="validation" value="&lt;b&gt;Processing&lt;/b&gt;&lt;br&gt;Validación + curación" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eadff8;strokeColor=#9c79c7;fontColor=#513476;fontSize=17;spacing=10;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="943" y="656" width="210" height="91" as="geometry"/>
+                </mxCell>
+                <mxCell id="curated" value="&lt;b&gt;S3 curado&lt;/b&gt;&lt;br&gt;Eventos + fecha conocida" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eadff8;strokeColor=#9c79c7;fontColor=#513476;fontSize=17;spacing=10;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="1190" y="656" width="220" height="91" as="geometry"/>
+                </mxCell>
+                <mxCell id="predictions" value="&lt;b&gt;S3 predicciones&lt;/b&gt;&lt;br&gt;ID seudónimo + versión" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eadff8;strokeColor=#9c79c7;fontColor=#513476;fontSize=17;spacing=10;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="690" y="898" width="220" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="reconcile" value="&lt;b&gt;Conciliación diaria&lt;/b&gt;&lt;br&gt;30 días + margen tardío" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eadff8;strokeColor=#9c79c7;fontColor=#513476;fontSize=17;spacing=10;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="948" y="898" width="220" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="labels" value="&lt;b&gt;S3 etiquetas&lt;/b&gt;&lt;br&gt;Cohortes maduras / correcciones" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dfcff3;strokeColor=#865db8;fontColor=#513476;fontSize=17;spacing=10;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="1205" y="898" width="228" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="scheduler" value="&lt;b&gt;EventBridge Scheduler&lt;/b&gt;&lt;br&gt;Diario / semanal / mensual" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe8c9;strokeColor=#d69342;fontColor=#74420a;fontSize=17;spacing=10;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="1750" y="208" width="270" height="96" as="geometry"/>
+                </mxCell>
+                <mxCell id="stepfunctions" value="&lt;b&gt;Step Functions&lt;/b&gt;&lt;br&gt;Ingesta + conciliación" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe8c9;strokeColor=#d69342;fontColor=#74420a;fontSize=17;spacing=10;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="2080" y="208" width="275" height="96" as="geometry"/>
+                </mxCell>
+                <mxCell id="monitoring" value="&lt;b&gt;Processing: monitoreo&lt;/b&gt;&lt;br&gt;PSI, KS, χ² + desempeño&lt;br&gt;Equidad por subgrupo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe8c9;strokeColor=#d69342;fontColor=#74420a;fontSize=17;spacing=10;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="1750" y="397" width="270" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="alarms" value="&lt;b&gt;CloudWatch + SQS DLQ&lt;/b&gt;&lt;br&gt;Alarmas y fallas de jobs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe8c9;strokeColor=#d69342;fontColor=#74420a;fontSize=17;spacing=10;arcSize=12;align=left;spacingLeft=114;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="2080" y="405" width="275" height="95" as="geometry"/>
+                </mxCell>
+                <mxCell id="pipeline" value="&lt;b&gt;SageMaker Pipeline E3&lt;/b&gt;&lt;br&gt;3 cohortes maduras → Training&lt;br&gt;Evaluación temporal y equidad" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffdfb5;strokeColor=#cc8129;fontColor=#74420a;fontSize=17;spacing=10;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="1750" y="635" width="275" height="123" as="geometry"/>
+                </mxCell>
+                <mxCell id="registry" value="&lt;b&gt;Model Registry&lt;/b&gt;&lt;br&gt;Candidato + linaje&lt;br&gt;Pendiente de aprobación" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffdfb5;strokeColor=#cc8129;fontColor=#74420a;fontSize=17;spacing=10;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="2080" y="645" width="275" height="107" as="geometry"/>
+                </mxCell>
+                <mxCell id="approval" value="&lt;b&gt;Aprobación ML + clínica&lt;/b&gt;&lt;br&gt;Revisión de calidad y sesgo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe8c9;strokeColor=#d69342;fontColor=#74420a;fontSize=17;spacing=10;arcSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="2080" y="882" width="275" height="95" as="geometry"/>
+                </mxCell>
+                <mxCell id="deploy" value="&lt;b&gt;CI/CD + canario&lt;/b&gt;&lt;br&gt;CloudWatch rollback" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe8c9;strokeColor=#d69342;fontColor=#74420a;fontSize=17;spacing=10;arcSize=12;align=left;spacingLeft=78;fontSize=15;" parent="1" vertex="1">
+                    <mxGeometry x="1750" y="882" width="275" height="95" as="geometry"/>
+                </mxCell>
+                <mxCell id="e1" value="Alta" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#3975b8;fontSize=14;" parent="1" source="ehr" target="api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#3975b8;" parent="1" source="api" target="lambda" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e3" value="InvokeEndpoint" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#3975b8;fontSize=14;" parent="1" source="lambda" target="endpoint" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e4" value="Historial as-of" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=block;startFill=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#3975b8;fontSize=14;" parent="1" source="lambda" target="ddb" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e5" value="Resultado para revisión" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#3975b8;fontSize=14;exitX=0.5;exitY=1;entryX=1;entryY=0.5;" parent="1" source="endpoint" target="clinicians" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1225" y="515"/>
+                            <mxPoint x="365" y="515"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e6" value="Lote diario" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#875db8;fontSize=14;" parent="1" source="admissions" target="transfer" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#875db8;" parent="1" source="transfer" target="raw" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#875db8;" parent="1" source="raw" target="validation" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#875db8;" parent="1" source="validation" target="curated" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e10" value="Historial validado" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#875db8;fontSize=14;exitX=0.5;exitY=0;entryX=1;entryY=0.5;" parent="1" source="validation" target="ddb" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1048" y="560"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e11" value="Predicción + versión" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#875db8;fontSize=14;exitX=0;exitY=1;entryX=0.5;entryY=0;" parent="1" source="lambda" target="predictions" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="620" y="565"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#875db8;" parent="1" source="predictions" target="reconcile" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e13" value="Reingresos" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#875db8;fontSize=14;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="curated" target="reconcile" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1300" y="815"/>
+                            <mxPoint x="1058" y="815"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e14" value="30 d + margen" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#875db8;fontSize=14;" parent="1" source="reconcile" target="labels" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#c47b25;" parent="1" source="scheduler" target="stepfunctions" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e16" value="Ejecuta ingesta" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#c47b25;fontSize=14;exitX=0;exitY=1;entryX=1;entryY=0.5;" parent="1" source="stepfunctions" target="validation" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="2080" y="365"/>
+                            <mxPoint x="1330" y="365"/>
+                            <mxPoint x="1330" y="600"/>
+                            <mxPoint x="1153" y="600"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e17" value="Programa" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#c47b25;fontSize=14;" parent="1" source="scheduler" target="monitoring" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e18" value="Métricas" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#c47b25;fontSize=14;" parent="1" source="monitoring" target="alarms" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e19" value="PSI + calidad" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#c47b25;fontSize=14;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="1" source="curated" target="monitoring" edge="1">
+                    <mxGeometry x="-0.0986" y="15" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1485" y="700"/>
+                            <mxPoint x="1485" y="460"/>
+                        </Array>
+                        <mxPoint y="1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e20" value="Alerta E4: candidato extra" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#c47b25;fontSize=14;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="monitoring" target="pipeline" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e21" value="3 cohortes maduras" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#c47b25;fontSize=14;exitX=1;exitY=0.5;entryX=0.5;entryY=1;" parent="1" source="labels" target="pipeline" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1545" y="943"/>
+                            <mxPoint x="1545" y="810"/>
+                            <mxPoint x="1888" y="810"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e22" value="Candidato" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#c47b25;fontSize=14;" parent="1" source="pipeline" target="registry" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e23" value="Revisión humana" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#c47b25;fontSize=14;" parent="1" source="registry" target="approval" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e24" value="Aprobado" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#c47b25;fontSize=14;" parent="1" source="approval" target="deploy" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e25" value="Versión gradual + rollback" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#c47b25;fontSize=14;exitX=0;exitY=0.5;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="deploy" target="endpoint" edge="1">
+                    <mxGeometry x="-0.198" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1750" y="935"/>
+                            <mxPoint x="1600" y="935"/>
+                            <mxPoint x="1600" y="400"/>
+                            <mxPoint x="1225" y="400"/>
+                        </Array>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e26" value="Calendario mensual" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#c47b25;fontSize=14;exitX=0;exitY=0.5;entryX=0;entryY=0.5;" parent="1" source="scheduler" target="pipeline" edge="1">
+                    <mxGeometry x="0.423" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1725" y="256"/>
+                            <mxPoint x="1725" y="697"/>
+                        </Array>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e27" value="Conciliación diaria" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#c47b25;fontSize=14;entryX=1;entryY=0.5;" parent="1" target="reconcile" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="2355" y="260"/>
+                            <mxPoint x="2420" y="260"/>
+                            <mxPoint x="2420" y="1045"/>
+                            <mxPoint x="1510" y="1045"/>
+                            <mxPoint x="1510" y="1040"/>
+                            <mxPoint x="1190" y="1040"/>
+                            <mxPoint x="1190" y="943"/>
+                        </Array>
+                        <mxPoint x="2355" y="256" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="icon_api_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#E7157B;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.api_gateway;" parent="1" vertex="1">
+                    <mxGeometry x="478" y="255" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_lambda_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#ED7100;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;" parent="1" vertex="1">
+                    <mxGeometry x="748" y="255" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_endpoint_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#01A88D;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sagemaker;" parent="1" vertex="1">
+                    <mxGeometry x="1084" y="256" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_ddb_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#C925D1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;" parent="1" vertex="1">
+                    <mxGeometry x="767" y="414" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_transfer_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#01A88D;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.transfer_family;" parent="1" vertex="1">
+                    <mxGeometry x="467" y="675" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_raw_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#7AA116;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" parent="1" vertex="1">
+                    <mxGeometry x="718" y="675" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_validation_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#01A88D;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sagemaker;" parent="1" vertex="1">
+                    <mxGeometry x="955" y="675" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_curated_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#7AA116;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" parent="1" vertex="1">
+                    <mxGeometry x="1202" y="675" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_predictions_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#7AA116;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" parent="1" vertex="1">
+                    <mxGeometry x="702" y="917" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_reconcile_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#01A88D;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sagemaker;" parent="1" vertex="1">
+                    <mxGeometry x="960" y="917" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_labels_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#7AA116;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" parent="1" vertex="1">
+                    <mxGeometry x="1217" y="917" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_scheduler_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=none;gradientColor=none;fillColor=#E7157B;shape=mxgraph.aws4.eventbridge_scheduler;" parent="1" vertex="1">
+                    <mxGeometry x="1762" y="230" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_stepfunctions_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#E7157B;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.step_functions;" parent="1" vertex="1">
+                    <mxGeometry x="2092" y="230" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_monitoring_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#01A88D;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sagemaker;" parent="1" vertex="1">
+                    <mxGeometry x="1762" y="426" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_alarms_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#E7157B;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cloudwatch_2;" parent="1" vertex="1">
+                    <mxGeometry x="2092" y="431" width="42" height="42" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_alarms_1" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#E7157B;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sqs;" parent="1" vertex="1">
+                    <mxGeometry x="2141" y="431" width="42" height="42" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_pipeline_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#01A88D;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sagemaker;" parent="1" vertex="1">
+                    <mxGeometry x="1762" y="670" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_registry_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#01A88D;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sagemaker;" parent="1" vertex="1">
+                    <mxGeometry x="2092" y="672" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="icon_deploy_0" value="" style="sketch=0;outlineConnect=0;html=1;aspect=fixed;strokeColor=#ffffff;gradientColor=none;fillColor=#C925D1;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.codepipeline;" parent="1" vertex="1">
+                    <mxGeometry x="1762" y="903" width="52" height="52" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
