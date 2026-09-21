@@ -1,6 +1,6 @@
 # Data Drift & Concept Drift — documentación completa
 
-Este documento detalla el módulo de monitoreo y adaptación ante drift del sistema de predicción de reingreso hospitalario: qué se mide, cómo, con qué resultados, y qué limitaciones tiene. Es la referencia técnica de la Sección 8-10 de `informe/informe.tex`. Vive principalmente en `05_drift_adaptacion.ipynb` (Secciones 7-14), construido sobre el modelo elegido en `03_modelado.ipynb` (Fase 3).
+Este documento detalla el módulo de monitoreo y adaptación ante drift del sistema de predicción de reingreso hospitalario: qué se mide, cómo, con qué resultados, y qué limitaciones tiene. Es la referencia técnica de la Sección 8-10 de `informe/informe.tex`. Vive principalmente en `notebooks/07_drift_monitoreo.ipynb` (Secciones 7-14), construido sobre el modelo elegido en `notebooks/04_modelado.ipynb` (Fase 3).
 
 ## 1. Marco conceptual
 
@@ -15,7 +15,7 @@ En este proyecto:
 
 ## 2. Por qué ventanas fijas (y no un stream real)
 
-El dataset no tiene fecha de admisión explícita. `encounter_id` se usa como proxy cronológico, validado en `02_EDA.ipynb` (el siguiente encuentro del mismo paciente registra hospitalizaciones previas en 84.9% de los casos vs. 47.4% en orden inverso — si el orden fuera arbitrario, esa asimetría no existiría). Sobre ese eje se arman **10 bloques pseudo-temporales** de tamaño equivalente (`bloque = period // 2 + 1`), simulando 10 periodos anuales. Todo el monitoreo de drift compara bloques entre sí, nunca registros individuales.
+El dataset no tiene fecha de admisión explícita. `encounter_id` se usa como proxy cronológico, validado en `notebooks/03_preprocesamiento.ipynb` (el siguiente encuentro del mismo paciente registra hospitalizaciones previas en 84.9% de los casos vs. 47.4% en orden inverso — si el orden fuera arbitrario, esa asimetría no existiría). Sobre ese eje se arman **10 bloques pseudo-temporales** de tamaño equivalente (`bloque = period // 2 + 1`), simulando 10 periodos anuales. Todo el monitoreo de drift compara bloques entre sí, nunca registros individuales.
 
 ## 3. Monitoreo de distribución de features (data drift básico) — Sección 7
 
@@ -29,7 +29,7 @@ El dataset no tiene fecha de admisión explícita. `encounter_id` se usa como pr
 
 **Por qué PSI + prueba de hipótesis y no solo una:** PSI es una medida de *tamaño de efecto* (cuánto cambió la distribución) pero no da significancia estadística; la prueba de hipótesis da significancia pero no tamaño de efecto (con datasets grandes, hasta cambios triviales son "significativos"). Combinar ambas evita las dos trampas.
 
-**Resultado (última corrida, post-fix):** de 153 comparaciones (17 variables × 9 bloques), 131 estables, 14 en vigilancia, 8 en alerta. Las alertas se concentran en `number_diagnoses_capped` y `admission_type_grp`, y aparecen recién desde el bloque 7-8 en adelante — consistente con el hallazgo de `02_EDA.ipynb` de que el número de diagnósticos cambia su régimen de codificación hacia el final del periodo de estudio. Tabla completa: `resultados/drift_por_bloque.csv`; heatmap: `resultados/fig_psi_heatmap.png`.
+**Resultado (última corrida, post-fix):** de 153 comparaciones (17 variables × 9 bloques), 131 estables, 14 en vigilancia, 8 en alerta. Las alertas se concentran en `number_diagnoses_capped` y `admission_type_grp`, y aparecen recién desde el bloque 7-8 en adelante — consistente con el hallazgo de `notebooks/03_preprocesamiento.ipynb` de que el número de diagnósticos cambia su régimen de codificación hacia el final del periodo de estudio. Tabla completa: `resultados/drift_por_bloque.csv`; heatmap: `resultados/fig_psi_heatmap.png`.
 
 ## 4. Mapeo de degradación — Experimento E1 (concept drift real)
 
@@ -100,7 +100,7 @@ Archivos: `resultados/caso_negocio_resumen.csv`, `resultados/caso_negocio_por_bl
 
 | Archivo | Contenido |
 |---|---|
-| `05_drift_adaptacion.ipynb` | Todo el código de este módulo (Secciones 7-14) |
+| `notebooks/07_drift_monitoreo.ipynb` | Todo el código de este módulo (Secciones 7-14) |
 | `resultados/drift_por_bloque.csv` | PSI + p-valor por variable y bloque |
 | `resultados/fig_psi_heatmap.png` | Heatmap de PSI |
 | `resultados/fase3_res_e1.csv`, `fig_E1_degradacion.png` | Curva de degradación E1 |

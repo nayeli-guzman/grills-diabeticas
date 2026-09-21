@@ -152,38 +152,69 @@ El sistema se concibe como un \textbf{pipeline continuo adaptativo} de seis mód
 
 \begin{figure}[H]
 \centering
+\resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[
-    node distance=0.55cm and 0.9cm,
-    box/.style={draw, rounded corners, fill=blue!8, minimum width=2.6cm, minimum height=1.1cm, align=center, font=\footnotesize},
-    arr/.style={-{Stealth[length=2mm]}, thick}
+    node distance=0.5cm and 0.45cm,
+    box/.style={draw, rounded corners, fill=blue!8, minimum width=2.5cm, minimum height=1.5cm, align=center, font=\scriptsize, text width=2.3cm},
+    subbox/.style={draw, rounded corners, fill=blue!4, minimum width=3.2cm, minimum height=0.55cm, align=left, font=\scriptsize, text width=3.0cm},
+    driftbox/.style={draw, rounded corners, fill=orange!14, minimum width=4.6cm, minimum height=1.1cm, align=center, font=\scriptsize, text width=4.3cm},
+    arr/.style={-{Stealth[length=2mm]}, thick},
+    circ/.style={circle, draw, fill=blue!70!black, text=white, font=\tiny\bfseries, inner sep=1.2pt, minimum size=11pt}
 ]
-\node[box] (adq) {1. Adquisición\\(EHR)};
-\node[box, right=of adq] (pred) {2. Predictivo\\adaptativo};
-\node[box, right=of pred] (inc) {3. Incertidumbre\\\& calibración};
-\node[box, right=of inc] (dec) {4. Decisión\\\& umbrales};
-\node[box, right=of dec] (acc) {5. Acción\\clínica (HITL)};
-\node[box, below=1.1cm of pred, fill=orange!12] (drift) {6. Monitoreo de\\data/concept drift};
+\node[box] (n1) {Adquisición de datos desde el EHR};
+\node[box, right=of n1] (n2) {Preprocesamiento de \emph{features}\\(limpieza, normalización, codificación)};
+\node[box, right=of n2] (n3) {Modelo predictivo adaptativo\\(ML/IA)};
+\node[box, right=of n3] (n4) {Evaluador de incertidumbre y calibración de probabilidades (\emph{confidence scores})};
+\node[box, right=of n4] (n5) {Toma de decisiones\\(umbrales de riesgo)};
+\node[box, right=of n5, fill=blue!12] (n6) {Componente de acción clínica};
 
-\draw[arr] (adq) -- (pred);
-\draw[arr] (pred) -- (inc);
-\draw[arr] (inc) -- (dec);
-\draw[arr] (dec) -- (acc);
-\draw[arr] (drift.west) -| ([xshift=-0.3cm]adq.south) -- (adq.south);
-\draw[arr] (pred.south) -- (drift.north);
-\draw[arr] (drift.east) -| ([xshift=0.3cm]dec.south) -- (dec.south);
-\end{tikzpicture}
-\caption{Arquitectura del sistema: seis módulos, con retroalimentación del Módulo de Monitoreo de Drift hacia el reentrenamiento y hacia el ajuste de umbrales de decisión.}
+\node[circ, above=0.05cm of n1.north, xshift=-1.0cm] {1};
+\node[circ, above=0.05cm of n2.north, xshift=-1.0cm] {2};
+\node[circ, above=0.05cm of n3.north, xshift=-1.0cm] {3};
+\node[circ, above=0.05cm of n4.north, xshift=-1.0cm] {4};
+\node[circ, above=0.05cm of n5.north, xshift=-1.0cm] {5};
+\node[circ, above=0.05cm of n6.north, xshift=-1.0cm] {6};
+
+\node[subbox, below=0.35cm of n6.south, xshift=0.9cm, fill=green!12] (bajo) {\textbf{Bajo riesgo:} alta de rutina y seguimiento estándar};
+\node[subbox, below=0.25cm of bajo] (mod) {\textbf{Riesgo moderado:} monitoreo reforzado, consulta con farmacia};
+\node[subbox, below=0.25cm of mod, fill=red!10] (alto) {\textbf{Alto riesgo:} plan de transición personalizado, atención domiciliaria};
+\draw[arr] (n6.east) -| ++(0.35,0) |- (bajo.east);
+\draw[arr] (n6.east) -| ++(0.35,0) |- (mod.east);
+\draw[arr] (n6.east) -| ++(0.35,0) |- (alto.east);
+
+\node[driftbox, below=1.6cm of n3, xshift=1.3cm] (drift) {\textbf{Módulo de monitoreo de concept drift}\\(ventanas fijas)};
+
+\draw[arr] (n1) -- (n2);
+\draw[arr] (n2) -- (n3);
+\draw[arr] (n3) -- (n4);
+\draw[arr] (n4) -- (n5);
+\draw[arr] (n5) -- (n6);
+\draw[arr] (drift.north -| n3) -- node[right, font=\tiny, xshift=1pt]{retroalimentación para reentrenar} (n3.south);
+\draw[arr] (drift.north -| n4) -- (n4.south);
+\end{tikzpicture}}
+\caption{Arquitectura del sistema (diagrama de referencia del equipo, seis módulos numerados): Adquisición desde EHR $\to$ Preprocesamiento de \emph{features} $\to$ Modelo predictivo adaptativo $\to$ Evaluador de incertidumbre y calibración $\to$ Toma de decisiones con umbrales de riesgo $\to$ Componente de acción clínica (Bajo/Moderado/Alto riesgo). El Módulo de Monitoreo de Concept Drift por ventanas fijas retroalimenta tanto al modelo predictivo (reentrenamiento) como al evaluador de incertidumbre/calibración (los umbrales de confianza se recalculan junto con cada reentrenamiento).}
 \label{fig:arquitectura}
 \end{figure}
+
+\paragraph{¿El pipeline implementado sigue este diagrama?} Sí, con una correspondencia directa y --- tras la fusión de la Sección~\ref{sec:temp-branch} --- un notebook por módulo: (1) en \texttt{notebooks/01\_ingesta.ipynb}; (2) en \texttt{notebooks/03\_preprocesamiento.ipynb} (incluye la auditoría de fuga de información); (3) en \texttt{notebooks/04\_modelado.ipynb}; (4) en \texttt{notebooks/05\_calibracion\_incertidumbre.ipynb}; (5)-(6) en \texttt{notebooks/06\_decision\_accion.ipynb}; y el módulo de \emph{Concept Drift Monitoring} --- con el análisis completo por bloques pseudo-temporales, la capa de decisión bajo la estrategia adaptativa y el caso de negocio --- en \texttt{notebooks/07\_drift\_monitoreo.ipynb}. Las dos flechas de retroalimentación del diagrama están implementadas literalmente ahí: cada vez que el disparador E4 activa un reentrenamiento, \texttt{ModeloCalibrado.fit()} reajusta \emph{a la vez} el modelo (3) y su calibración (4) sobre la ventana nueva.
+
+\subsection{Fusión con la rama \texttt{temp}}
+\label{sec:temp-branch}
+
+En paralelo a la corrección de fugas de esta entrega, una integrante del equipo reorganizó el pipeline en la rama \texttt{temp} (commit \texttt{9397758}, sobre la misma base \texttt{62a9131} de \texttt{main}) en siete notebooks bajo \texttt{notebooks/}, cada uno mapeado 1 a 1 a un módulo de la Figura~\ref{fig:arquitectura}: \texttt{01\_ingesta} (1), \texttt{02\_eda} (exploración, fuera del \emph{runtime}), \texttt{03\_preprocesamiento} (2), \texttt{04\_modelado} (3), \texttt{05\_calibracion\_incertidumbre} (4), \texttt{06\_decision\_accion} (5-6) y \texttt{07\_drift\_monitoreo} (retroalimentación de drift) --- además de reorganizar los datos en \texttt{data/raw|interim|processed} y centralizar rutas en \texttt{src/paths.py}. Esto sigue el diagrama de referencia de forma más explícita que la estructura plana anterior (que agrupaba (3)+(4) en un notebook y (5)+(6)+monitoreo en otro).
+
+Esa rama partía del mismo commit que las correcciones de la Sección~\ref{sec:auditoria-drift} y no las incluía todavía: \texttt{notebooks/04\_modelado.ipynb} y \texttt{notebooks/07\_drift\_monitoreo.ipynb} llegaron con \texttt{USAR\_CONTEXTO=True} y \texttt{EMBARGO=850} sin cambios (solo con las rutas adaptadas a \texttt{data/}). La auditoría de \emph{leakage} en sí (\texttt{03\_preprocesamiento.ipynb}) ya estaba intacta y correcta, con la misma calibración de \texttt{LABEL\_DELAY=2{,}000} y la misma conclusión de no usar \texttt{ctx\_*}.
+
+\textbf{Se fusionaron ambos trabajos} en esta entrega: se adoptó la reorganización completa de \texttt{temp} (\texttt{notebooks/}, \texttt{data/raw|interim|processed}, \texttt{src/paths.py}) como estructura final del repositorio, y se le aplicaron encima las tres correcciones de la Sección~\ref{sec:auditoria-drift} --- \texttt{USAR\_CONTEXTO=False}, \texttt{EMBARGO=2{,}000} y la calibración Platt/Isotonic --- directamente sobre \texttt{notebooks/04\_modelado.ipynb} y \texttt{notebooks/07\_drift\_monitoreo.ipynb}, además de reubicar ahí el módulo de caso de negocio (Sección~\ref{sec:caso-negocio}). Los notebooks \texttt{01}, \texttt{02}, \texttt{03}, \texttt{05} y \texttt{06} de \texttt{temp} se incorporaron sin cambios de fondo. Todos los resultados de este informe, de aquí en adelante, provienen de esa estructura fusionada.
 
 % =====================================================================
 \section{Auditoría de Calidad de Datos y Corrección de Fugas Temporales}
 \label{sec:auditoria-drift}
 % =====================================================================
 
-Antes de reportar cualquier métrica de drift o de negocio, el equipo auditó la preparación de datos (\texttt{02\_EDA.ipynb}, Sección 10) siguiendo una batería de trece pruebas de fuga de información (disponibilidad de variables al alta, cribado univariado, identificadores, separación perfecta, latencia de etiqueta, contaminación entre conjuntos, etiquetas permutadas, desempeño plausible, pacientes vistos vs.\ nuevos, variables de contexto, dominancia de variables y reproducibilidad). La auditoría completa está en \texttt{artifacts/data\_preparada/auditoria\_leakage.csv}.
+Antes de reportar cualquier métrica de drift o de negocio, el equipo auditó la preparación de datos (\texttt{notebooks/03\_preprocesamiento.ipynb}, Sección 10) siguiendo una batería de trece pruebas de fuga de información (disponibilidad de variables al alta, cribado univariado, identificadores, separación perfecta, latencia de etiqueta, contaminación entre conjuntos, etiquetas permutadas, desempeño plausible, pacientes vistos vs.\ nuevos, variables de contexto, dominancia de variables y reproducibilidad). La auditoría completa está en \texttt{data/processed/auditoria\_leakage.csv}.
 
-Esta auditoría dejó dos recomendaciones explícitas para el modelado (\texttt{02\_EDA.ipynb}, conclusión \S10.7) que, al revisar \texttt{03\_modelado.ipynb} y \texttt{05\_drift\_adaptacion.ipynb} para este informe, \textbf{no se habían aplicado}:
+Esta auditoría dejó dos recomendaciones explícitas para el modelado (conclusión \S10.7) que, al revisar los notebooks de modelado y drift para este informe, \textbf{no se habían aplicado}:
 
 \begin{enumerate}[leftmargin=*]
     \item \textbf{Variables de contexto como proxy del periodo.} Las variables \texttt{ctx\_readmit\_rate}, \texttt{ctx\_inpatient\_mean}, \texttt{ctx\_a1c\_rate}, \texttt{rel\_number\_diagnoses} y \texttt{rel\_num\_medications} son promedios en ventana deslizante que, por construcción, cambian con el tiempo. La auditoría encontró que incluirlas \emph{empeora} la validación/test y agranda la brecha train$-$val (AUC val $0.664 \rightarrow 0.656$; brecha $0.079\rightarrow0.117$), es decir, el modelo aprende a leer ``en qué época está'' en vez de un patrón clínico transferible. Esto es particularmente grave para un estudio de \emph{concept drift}: si el propio predictor incorpora un proxy del tiempo, las curvas de degradación dejan de medir drift genuino. Se corrigió fijando \texttt{USAR\_CONTEXTO = False} en ambos notebooks.
@@ -282,14 +313,7 @@ El umbral óptimo de intervención se deriva de la matriz de costos: $p^{*} = C_
 \label{sec:caso-negocio}
 % =====================================================================
 
-La pregunta que valida todo el trabajo de las secciones anteriores es simple: \textbf{¿vale la pena construir y mantener el módulo de monitoreo de drift, o basta con desplegar el modelo una vez y olvidarlo?} Para responderla se comparan, sobre los mismos bloques de prueba, dos políticas:
-
-\begin{itemize}[leftmargin=*]
-    \item \textbf{Sin monitoreo (``desplegar y olvidar''):} el modelo se entrena una sola vez (bloques 1--2) y los umbrales de decisión $t_1,t_2$ se calibran una sola vez al inicio, sin volver a mirarse.
-    \item \textbf{Con monitoreo (estrategia adaptativa elegida):} el modelo y sus umbrales se actualizan según la estrategia con mejor PR-AUC en los bloques comunes (Sección~\ref{sec:drift}), disparada por el módulo de monitoreo de drift.
-\end{itemize}
-
-Para cada política se calcula el costo esperado por cada 1,000 altas (fórmula de costo esperado de la Sección anterior) en cada bloque de prueba, y se proyecta a una escala anual. Como el dataset no reporta el volumen anual de un hospital específico —solo el agregado de 10 años en 130 hospitales \cite{strack2014}— se usa como escala ilustrativa \supuesto{ALTAS\_ANUALES = 50{,}000 altas/año, del orden de una red hospitalaria mediana-grande}.
+La pregunta que valida todo el trabajo de las secciones anteriores es simple: \textbf{¿vale la pena construir y mantener el módulo de monitoreo de drift, o basta con desplegar el modelo una vez y olvidarlo?} Se compara, sobre los mismos bloques de prueba y con la misma fórmula de costo esperado de la Sección anterior, la política \textbf{sin monitoreo} (modelo y umbrales fijados una sola vez en los bloques 1--2) contra la política \textbf{con monitoreo} (estrategia adaptativa E3 $S=3$, disparada por el módulo de drift). El resultado se proyecta a una escala anual ilustrativa \supuesto{ALTAS\_ANUALES = 50{,}000 altas/año}, ya que el dataset solo reporta el agregado de 10 años en 130 hospitales \cite{strack2014}.
 
 \input{tabla_caso_negocio.tex}
 
@@ -300,9 +324,9 @@ Para cada política se calcula el costo esperado por cada 1,000 altas (fórmula 
 \label{fig:caso-negocio}
 \end{figure}
 
-El costo de mantenimiento se construye de abajo hacia arriba (monitoreo mensual de PSI/KS/calibración por subgrupo + cómputo batch, más el costo de cada reentrenamiento disparado por el módulo de drift), siguiendo el argumento de \cite{sculley2015} de que en sistemas de ML reales el costo dominante no es el entrenamiento inicial sino el monitoreo y el ``glue code'' de mantenimiento continuo — por eso este caso de negocio no asume mantenimiento gratuito.
+El hallazgo central no es el promedio sino la tendencia: el ahorro por cada 1,000 altas crece \textbf{16$\times$ entre el bloque 4 y el bloque 10} (Tabla~\ref{tab:caso-negocio-bloque}) --- el valor del monitoreo aumenta con el tiempo, porque un modelo sin vigilancia se degrada progresivamente, no de golpe. El costo de mantenimiento se construyó de abajo hacia arriba (monitoreo mensual + cómputo + reentrenos), no se asumió gratuito, siguiendo el argumento de \cite{sculley2015} de que en sistemas de ML reales el costo dominante es el mantenimiento continuo, no el entrenamiento inicial. Queda además, sin cuantificar por conservadurismo, la reducción de exposición a las penalizaciones del HRRP \cite{vanwalraven2011}.
 
-\textbf{Beneficio adicional no cuantificado (conservador):} un hospital sujeto al HRRP enfrenta penalizaciones económicas directas por exceso de reingresos \cite{vanwalraven2011}; reducir reingresos evitables reduce también esa exposición regulatoria, un beneficio que no se incluyó en el cálculo anterior para mantenerlo conservador.
+\textbf{Explicación completa} (de dónde sale cada supuesto, por qué crece el ahorro por bloque, qué queda fuera del cálculo y cómo reproducirlo) en \texttt{README\_CASO\_NEGOCIO.md}, en la raíz del repositorio.
 
 % =====================================================================
 \section{Auditoría de Equidad}
