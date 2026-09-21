@@ -14,6 +14,11 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{float}
+\usepackage{microtype}
+\usepackage{seqsplit}
+\emergencystretch=3em
+\tolerance=1200
+\newcommand{\nb}[1]{\texttt{notebooks/}\allowbreak\texttt{#1}}
 \usepackage{enumitem}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,shapes.geometric}
@@ -152,67 +157,28 @@ El sistema se concibe como un \textbf{pipeline continuo adaptativo} de seis mód
 
 \begin{figure}[H]
 \centering
-\resizebox{\textwidth}{!}{%
-\begin{tikzpicture}[
-    node distance=0.5cm and 0.45cm,
-    box/.style={draw, rounded corners, fill=blue!8, minimum width=2.5cm, minimum height=1.5cm, align=center, font=\scriptsize, text width=2.3cm},
-    subbox/.style={draw, rounded corners, fill=blue!4, minimum width=3.2cm, minimum height=0.55cm, align=left, font=\scriptsize, text width=3.0cm},
-    driftbox/.style={draw, rounded corners, fill=orange!14, minimum width=4.6cm, minimum height=1.1cm, align=center, font=\scriptsize, text width=4.3cm},
-    arr/.style={-{Stealth[length=2mm]}, thick},
-    circ/.style={circle, draw, fill=blue!70!black, text=white, font=\tiny\bfseries, inner sep=1.2pt, minimum size=11pt}
-]
-\node[box] (n1) {Adquisición de datos desde el EHR};
-\node[box, right=of n1] (n2) {Preprocesamiento de \emph{features}\\(limpieza, normalización, codificación)};
-\node[box, right=of n2] (n3) {Modelo predictivo adaptativo\\(ML/IA)};
-\node[box, right=of n3] (n4) {Evaluador de incertidumbre y calibración de probabilidades (\emph{confidence scores})};
-\node[box, right=of n4] (n5) {Toma de decisiones\\(umbrales de riesgo)};
-\node[box, right=of n5, fill=blue!12] (n6) {Componente de acción clínica};
-
-\node[circ, above=0.05cm of n1.north, xshift=-1.0cm] {1};
-\node[circ, above=0.05cm of n2.north, xshift=-1.0cm] {2};
-\node[circ, above=0.05cm of n3.north, xshift=-1.0cm] {3};
-\node[circ, above=0.05cm of n4.north, xshift=-1.0cm] {4};
-\node[circ, above=0.05cm of n5.north, xshift=-1.0cm] {5};
-\node[circ, above=0.05cm of n6.north, xshift=-1.0cm] {6};
-
-\node[subbox, below=0.35cm of n6.south, xshift=0.9cm, fill=green!12] (bajo) {\textbf{Bajo riesgo:} alta de rutina y seguimiento estándar};
-\node[subbox, below=0.25cm of bajo] (mod) {\textbf{Riesgo moderado:} monitoreo reforzado, consulta con farmacia};
-\node[subbox, below=0.25cm of mod, fill=red!10] (alto) {\textbf{Alto riesgo:} plan de transición personalizado, atención domiciliaria};
-\draw[arr] (n6.east) -| ++(0.35,0) |- (bajo.east);
-\draw[arr] (n6.east) -| ++(0.35,0) |- (mod.east);
-\draw[arr] (n6.east) -| ++(0.35,0) |- (alto.east);
-
-\node[driftbox, below=1.6cm of n3, xshift=1.3cm] (drift) {\textbf{Módulo de monitoreo de concept drift}\\(ventanas fijas)};
-
-\draw[arr] (n1) -- (n2);
-\draw[arr] (n2) -- (n3);
-\draw[arr] (n3) -- (n4);
-\draw[arr] (n4) -- (n5);
-\draw[arr] (n5) -- (n6);
-\draw[arr] (drift.north -| n3) -- node[right, font=\tiny, xshift=1pt]{retroalimentación para reentrenar} (n3.south);
-\draw[arr] (drift.north -| n4) -- (n4.south);
-\end{tikzpicture}}
+\includegraphics[width=\textwidth]{arquitectura.png}
 \caption{Arquitectura del sistema (diagrama de referencia del equipo, seis módulos numerados): Adquisición desde EHR $\to$ Preprocesamiento de \emph{features} $\to$ Modelo predictivo adaptativo $\to$ Evaluador de incertidumbre y calibración $\to$ Toma de decisiones con umbrales de riesgo $\to$ Componente de acción clínica (Bajo/Moderado/Alto riesgo). El Módulo de Monitoreo de Concept Drift por ventanas fijas retroalimenta tanto al modelo predictivo (reentrenamiento) como al evaluador de incertidumbre/calibración (los umbrales de confianza se recalculan junto con cada reentrenamiento).}
 \label{fig:arquitectura}
 \end{figure}
 
-\paragraph{¿El pipeline implementado sigue este diagrama?} Sí, con una correspondencia directa y --- tras la fusión de la Sección~\ref{sec:temp-branch} --- un notebook por módulo: (1) en \texttt{notebooks/01\_ingesta.ipynb}; (2) en \texttt{notebooks/03\_preprocesamiento.ipynb} (incluye la auditoría de fuga de información); (3) en \texttt{notebooks/04\_modelado.ipynb}; (4) en \texttt{notebooks/05\_calibracion\_incertidumbre.ipynb}; (5)-(6) en \texttt{notebooks/06\_decision\_accion.ipynb}; y el módulo de \emph{Concept Drift Monitoring} --- con el análisis completo por bloques pseudo-temporales, la capa de decisión bajo la estrategia adaptativa y el caso de negocio --- en \texttt{notebooks/07\_drift\_monitoreo.ipynb}. Las dos flechas de retroalimentación del diagrama están implementadas literalmente ahí: cada vez que el disparador E4 activa un reentrenamiento, \texttt{ModeloCalibrado.fit()} reajusta \emph{a la vez} el modelo (3) y su calibración (4) sobre la ventana nueva.
+\paragraph{¿El pipeline implementado sigue este diagrama?} Sí, con una correspondencia directa y --- tras la fusión de la Sección~\ref{sec:temp-branch} --- un notebook por módulo: (1) en \nb{01\_ingesta.ipynb}; (2) en \nb{03\_preprocesamiento.ipynb} (incluye la auditoría de fuga de información); (3) en \nb{04\_modelado.ipynb}; (4) en \nb{05\_calibracion\_incertidumbre.ipynb}; (5)-(6) en \nb{06\_decision\_accion.ipynb}; y el módulo de \emph{Concept Drift Monitoring} --- con el análisis completo por bloques pseudo-temporales, la capa de decisión bajo la estrategia adaptativa y el caso de negocio --- en \nb{07\_drift\_monitoreo.ipynb}. Las dos flechas de retroalimentación del diagrama están implementadas literalmente ahí: cada vez que el disparador E4 activa un reentrenamiento, \texttt{ModeloCalibrado.fit()} reajusta \emph{a la vez} el modelo (3) y su calibración (4) sobre la ventana nueva.
 
 \subsection{Fusión con la rama \texttt{temp}}
 \label{sec:temp-branch}
 
-En paralelo a la corrección de fugas de esta entrega, una integrante del equipo reorganizó el pipeline en la rama \texttt{temp} (commit \texttt{9397758}, sobre la misma base \texttt{62a9131} de \texttt{main}) en siete notebooks bajo \texttt{notebooks/}, cada uno mapeado 1 a 1 a un módulo de la Figura~\ref{fig:arquitectura}: \texttt{01\_ingesta} (1), \texttt{02\_eda} (exploración, fuera del \emph{runtime}), \texttt{03\_preprocesamiento} (2), \texttt{04\_modelado} (3), \texttt{05\_calibracion\_incertidumbre} (4), \texttt{06\_decision\_accion} (5-6) y \texttt{07\_drift\_monitoreo} (retroalimentación de drift) --- además de reorganizar los datos en \texttt{data/raw|interim|processed} y centralizar rutas en \texttt{src/paths.py}. Esto sigue el diagrama de referencia de forma más explícita que la estructura plana anterior (que agrupaba (3)+(4) en un notebook y (5)+(6)+monitoreo en otro).
+En paralelo a la corrección de fugas de esta entrega, una integrante del equipo reorganizó el pipeline en la rama \texttt{temp} (commit \texttt{9397758}, sobre la misma base \texttt{62a9131} de \texttt{main}) en siete notebooks bajo \nb{}, cada uno mapeado 1 a 1 a un módulo de la Figura~\ref{fig:arquitectura}: \texttt{01\_ingesta} (1), \texttt{02\_eda} (exploración, fuera del \emph{runtime}), \texttt{03\_preprocesamiento} (2), \texttt{04\_modelado} (3), \texttt{05\_calibracion\_incertidumbre} (4), \texttt{06\_decision\_accion} (5-6) y \texttt{07\_drift\_monitoreo} (retroalimentación de drift) --- además de reorganizar los datos en \texttt{data/raw|interim|processed} y centralizar rutas en \texttt{src/paths.py}. Esto sigue el diagrama de referencia de forma más explícita que la estructura plana anterior (que agrupaba (3)+(4) en un notebook y (5)+(6)+monitoreo en otro).
 
-Esa rama partía del mismo commit que las correcciones de la Sección~\ref{sec:auditoria-drift} y no las incluía todavía: \texttt{notebooks/04\_modelado.ipynb} y \texttt{notebooks/07\_drift\_monitoreo.ipynb} llegaron con \texttt{USAR\_CONTEXTO=True} y \texttt{EMBARGO=850} sin cambios (solo con las rutas adaptadas a \texttt{data/}). La auditoría de \emph{leakage} en sí (\texttt{03\_preprocesamiento.ipynb}) ya estaba intacta y correcta, con la misma calibración de \texttt{LABEL\_DELAY=2{,}000} y la misma conclusión de no usar \texttt{ctx\_*}.
+Esa rama partía del mismo commit que las correcciones de la Sección~\ref{sec:auditoria-drift} y no las incluía todavía: \nb{04\_modelado.ipynb} y \nb{07\_drift\_monitoreo.ipynb} llegaron con \texttt{USAR\_CONTEXTO=True} y \texttt{EMBARGO=850} sin cambios (solo con las rutas adaptadas a \texttt{data/}). La auditoría de \emph{leakage} en sí (\texttt{03\_preprocesamiento.ipynb}) ya estaba intacta y correcta, con la misma calibración de \texttt{LABEL\_DELAY=2{,}000} y la misma conclusión de no usar \texttt{ctx\_*}.
 
-\textbf{Se fusionaron ambos trabajos} en esta entrega: se adoptó la reorganización completa de \texttt{temp} (\texttt{notebooks/}, \texttt{data/raw|interim|processed}, \texttt{src/paths.py}) como estructura final del repositorio, y se le aplicaron encima las tres correcciones de la Sección~\ref{sec:auditoria-drift} --- \texttt{USAR\_CONTEXTO=False}, \texttt{EMBARGO=2{,}000} y la calibración Platt/Isotonic --- directamente sobre \texttt{notebooks/04\_modelado.ipynb} y \texttt{notebooks/07\_drift\_monitoreo.ipynb}, además de reubicar ahí el módulo de caso de negocio (Sección~\ref{sec:caso-negocio}). Los notebooks \texttt{01}, \texttt{02}, \texttt{03}, \texttt{05} y \texttt{06} de \texttt{temp} se incorporaron sin cambios de fondo. Todos los resultados de este informe, de aquí en adelante, provienen de esa estructura fusionada.
+\textbf{Se fusionaron ambos trabajos} en esta entrega: se adoptó la reorganización completa de \texttt{temp} (\nb{}, \texttt{data/raw|interim|processed}, \texttt{src/paths.py}) como estructura final del repositorio, y se le aplicaron encima las tres correcciones de la Sección~\ref{sec:auditoria-drift} --- \texttt{USAR\_CONTEXTO=False}, \texttt{EMBARGO=2{,}000} y la calibración Platt/Isotonic --- directamente sobre \nb{04\_modelado.ipynb} y \nb{07\_drift\_monitoreo.ipynb}, además de reubicar ahí el módulo de caso de negocio (Sección~\ref{sec:caso-negocio}). Los notebooks \texttt{01}, \texttt{02}, \texttt{03}, \texttt{05} y \texttt{06} de \texttt{temp} se incorporaron sin cambios de fondo. Todos los resultados de este informe, de aquí en adelante, provienen de esa estructura fusionada.
 
 % =====================================================================
 \section{Auditoría de Calidad de Datos y Corrección de Fugas Temporales}
 \label{sec:auditoria-drift}
 % =====================================================================
 
-Antes de reportar cualquier métrica de drift o de negocio, el equipo auditó la preparación de datos (\texttt{notebooks/03\_preprocesamiento.ipynb}, Sección 10) siguiendo una batería de trece pruebas de fuga de información (disponibilidad de variables al alta, cribado univariado, identificadores, separación perfecta, latencia de etiqueta, contaminación entre conjuntos, etiquetas permutadas, desempeño plausible, pacientes vistos vs.\ nuevos, variables de contexto, dominancia de variables y reproducibilidad). La auditoría completa está en \texttt{data/processed/auditoria\_leakage.csv}.
+Antes de reportar cualquier métrica de drift o de negocio, el equipo auditó la preparación de datos (\nb{03\_preprocesamiento.ipynb}, Sección 10) siguiendo una batería de trece pruebas de fuga de información (disponibilidad de variables al alta, cribado univariado, identificadores, separación perfecta, latencia de etiqueta, contaminación entre conjuntos, etiquetas permutadas, desempeño plausible, pacientes vistos vs.\ nuevos, variables de contexto, dominancia de variables y reproducibilidad). La auditoría completa está en \texttt{data/processed/auditoria\_leakage.csv}.
 
 Esta auditoría dejó dos recomendaciones explícitas para el modelado (conclusión \S10.7) que, al revisar los notebooks de modelado y drift para este informe, \textbf{no se habían aplicado}:
 
