@@ -5,7 +5,7 @@ Técnica,Brier,≤ 0.095,0.0963 (BSS 0.044),✘
 Técnica,Pendiente de calibración,"[0.85, 1.15]",1.05 (rango 0.78–1.44),✔
 Técnica,Intercepto de calibración,"[−0.15, 0.15]",-0.031,✔
 Técnica,ECE,≤ 0.02,0.0144,✔
-Técnica,Latencia p95,"< 1,000 ms",111.3 ms,✔
+Técnica,Latencia p95,"< 1,000 ms",79.5 ms,✔
 Decisión,Beneficio neto (DCA),≥ referencias en 0.05–0.30,supera en 100% del rango,✔
 Decisión,Costo esperado (base),< mín(referencias),"ahorro US$25,008 / 1,000 altas",✔
 Decisión,Costo esperado (sensibilidad e),"< mín(referencias) para e ∈ {0.12, 0.18, 0.38}","16,016 / 25,008 / -8,829",✘

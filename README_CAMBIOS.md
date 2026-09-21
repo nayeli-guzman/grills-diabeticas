@@ -1,9 +1,16 @@
 # Registro de cambios — sesión de revisión de Data Drift
 
-Este documento registra todo lo que se modificó sobre el trabajo ya existente del equipo (notebooks `02_EDA.ipynb`, `03_modelado.ipynb`, `05_drift_adaptacion.ipynb`) durante esta sesión, por qué se hizo, y qué resultados nuevos generó. No reemplaza al `README.md` del repo; es un registro de auditoría de esta iteración puntual.
+Este documento registra todo lo que se modificó sobre el trabajo ya existente del equipo durante esta sesión, por qué se hizo, y qué resultados nuevos generó. No reemplaza al `README.md` del repo; es un registro de auditoría de esta iteración puntual.
 
 > Para el detalle completo de la metodología de drift (qué es, cómo se mide, resultados), ver **`README_DATA_DRIFT.md`**.
+> Para el caso de negocio explicado a fondo, ver **`README_CASO_NEGOCIO.md`**.
 > Para el informe narrativo completo (enunciado + resultados + caso de negocio + bibliografía), ver **`informe/informe.tex`** / **`informe/informe.pdf`**.
+
+## 0. Nota de estructura: esta sesión tuvo dos partes
+
+**Parte 1 (Secciones 1-6 de este documento):** se corrigieron dos bugs de fuga de información sobre la estructura plana original (`02_EDA.ipynb`, `03_modelado.ipynb`, `05_drift_adaptacion.ipynb`, en la raíz del repo).
+
+**Parte 2 (Sección 7):** en paralelo, otra integrante del equipo había reorganizado el pipeline en la rama `temp` (`notebooks/01_ingesta.ipynb` … `07_drift_monitoreo.ipynb`, con `data/raw|interim|processed` y `src/paths.py`), sin los fixes de la Parte 1. Se **fusionaron ambos trabajos**: la estructura de `notebooks/` de `temp` es ahora la estructura final del repo, con los fixes de la Parte 1 ya aplicados encima. Los archivos planos originales (`02_EDA.ipynb`, `03_modelado.ipynb`, `05_drift_adaptacion.ipynb`, `artifacts/data_preparada/`) se retiraron porque quedaron duplicados por `notebooks/03_preprocesamiento.ipynb`, `04_modelado.ipynb` y `07_drift_monitoreo.ipynb`. **Todo lo que sigue en las Secciones 1-6 aplica igual, solo que ahora vive en `notebooks/` en vez de en la raíz** — se dejan las rutas originales sin reescribir porque así es como se descubrieron los bugs, y en la Sección 7 se detalla el mapeo a la ruta nueva.
 
 ## 1. Por qué se hicieron estos cambios
 
@@ -73,32 +80,68 @@ Se agregaron ~14 referencias nuevas al informe (no estaban en el documento origi
 
 **Nota sobre "Incertidumbre Alta":** subió después del fix. Esto es esperable y es una señal de que el fix funcionó: antes, el modelo usaba `ctx_readmit_rate` como un atajo que lo hacía parecer más seguro de sí mismo (aprendía "en qué época está" en vez de generalizar); al quitarlo, sus réplicas bootstrap discrepan más — el modelo es menos overconfident, no que haya empeorado objetivamente. Se documenta como limitación conocida en `README_DATA_DRIFT.md`.
 
-## 5. Cómo reproducir
+## 5. Cómo reproducir (estructura actual, post-fusión — ver Sección 7)
 
-Orden de ejecución (cada uno depende del anterior):
+Orden de ejecución, desde la carpeta `notebooks/` (cada uno depende del anterior):
 
 ```bash
-# 1. Preparación de datos + auditoría de leakage (ya no se tocó en esta sesión)
-jupyter nbconvert --to notebook --execute --inplace 02_EDA.ipynb
+cd notebooks
 
-# 2. Modelado (Fase 3) — con los fixes de esta sesión
-jupyter nbconvert --to notebook --execute --inplace 03_modelado.ipynb
+# 1. Ingesta
+jupyter nbconvert --to notebook --execute --inplace 01_ingesta.ipynb
 
-# 3. Monitoreo de drift + capa de decisión + caso de negocio (Fase 4-5) — con los fixes de esta sesión
-jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=python3 05_drift_adaptacion.ipynb
+# 2. Preprocesamiento + auditoría de leakage (embargo calibrado a 2,000 encuentros)
+jupyter nbconvert --to notebook --execute --inplace 03_preprocesamiento.ipynb
+
+# 3. Modelado (Fase 3) — con los fixes de esta sesión
+jupyter nbconvert --to notebook --execute --inplace 04_modelado.ipynb
+
+# 4. Calibración de probabilidades (split estándar)
+jupyter nbconvert --to notebook --execute --inplace 05_calibracion_incertidumbre.ipynb
+
+# 5. Decisión y acción clínica (split estándar)
+jupyter nbconvert --to notebook --execute --inplace 06_decision_accion.ipynb
+
+# 6. Monitoreo de drift + capa de decisión por bloque + caso de negocio — con los fixes de esta sesión
+jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=python3 07_drift_monitoreo.ipynb
 ```
 
-Nota: `05_drift_adaptacion.ipynb` tiene guardado en sus metadatos un kernel llamado `diabetes-reingreso` que no existe en un entorno nuevo; por eso el flag `--ExecutePreprocessor.kernel_name=python3` (o registrar ese kernel con `python -m ipykernel install --name diabetes-reingreso`).
+Nota: `07_drift_monitoreo.ipynb` tiene guardado en sus metadatos un kernel llamado `diabetes-reingreso` que no existe en un entorno nuevo; por eso el flag `--ExecutePreprocessor.kernel_name=python3` (o registrar ese kernel con `python -m ipykernel install --name diabetes-reingreso`). `02_eda.ipynb` es solo exploratorio y no hace falta correrlo para que el pipeline funcione.
 
 ## 6. Archivos nuevos creados esta sesión
 
 - `informe/informe.tex`, `informe/informe.pdf`, `informe/tabla_*.tex`, `informe/_gen_tablas.py` — informe completo en LaTeX.
 - `resultados/caso_negocio_por_bloque.csv`, `resultados/caso_negocio_resumen.csv`, `resultados/fig_caso_negocio.png` — caso de negocio.
-- `README_CAMBIOS.md` (este archivo).
-- `README_DATA_DRIFT.md` — documentación completa del módulo de data/concept drift.
+- `README_CAMBIOS.md` (este archivo), `README_DATA_DRIFT.md`, `README_CASO_NEGOCIO.md`.
 
-## 7. Qué NO se hizo (a propósito)
+## 7. Fusión con la reorganización de `notebooks/` (rama `temp`)
+
+Después de corregir los dos bugs sobre la estructura plana (Secciones 1-6), se revisó la rama `temp`, donde una compañera había reorganizado el pipeline completo en `notebooks/01_ingesta.ipynb` … `07_drift_monitoreo.ipynb` + `data/raw|interim|processed` + `src/paths.py`, mapeando cada notebook a un módulo del diagrama de arquitectura del proyecto (ver `informe/informe.tex`, Figura 1). Esa reorganización es una mejora real y no tenía nada que ver con los bugs de leakage — partía del mismo commit que la versión sin corregir, así que sus notebooks `04_modelado.ipynb` y `07_drift_monitoreo.ipynb` tenían los mismos dos bugs (`USAR_CONTEXTO=True`, `EMBARGO=850`) que ya se habían corregido en la estructura plana.
+
+Se hizo la fusión: **se adoptó `notebooks/` de `temp` como estructura final del repositorio**, y se le aplicaron encima, exactamente igual que en las Secciones 1-6:
+
+- `USAR_CONTEXTO = False` en `notebooks/04_modelado.ipynb`, `notebooks/05_calibracion_incertidumbre.ipynb` y `notebooks/07_drift_monitoreo.ipynb`.
+- `EMBARGO = 2000` en `notebooks/04_modelado.ipynb` y `notebooks/07_drift_monitoreo.ipynb` (`05_calibracion_incertidumbre.ipynb` no tiene su propio embargo: usa directamente el split ya embargado de `03_preprocesamiento.ipynb`, así que no tenía este bug).
+- La clase `ModeloCalibrado` con selección Platt/Isotonic, en `04_modelado.ipynb` y `07_drift_monitoreo.ipynb`.
+- El módulo de caso de negocio (Sección 14), reubicado al final de `07_drift_monitoreo.ipynb` con las rutas adaptadas.
+
+**Qué se llevó de cada rama:**
+
+| De `main` (esta sesión) | De `temp` (la compañera) |
+|---|---|
+| Fix `USAR_CONTEXTO=False` | Estructura `notebooks/01..07` (un notebook por módulo del pipeline) |
+| Fix `EMBARGO=2000` | `data/raw \| interim \| processed` |
+| Calibración Platt/Isotonic automática | `src/paths.py` (rutas centralizadas) |
+| Caso de negocio (Sección 14) | `05_calibracion_incertidumbre.ipynb` y `06_decision_accion.ipynb` (notebooks nuevos, no existían en `main`) |
+| Informe LaTeX + este set de READMEs | `seaborn`, `statsmodels` en `requirements.txt` |
+
+**Archivos retirados** (quedaron duplicados por la nueva estructura, ya no están en el repo): `02_EDA.ipynb`, `03_modelado.ipynb`, `05_drift_adaptacion.ipynb`, `artifacts/data_preparada/`, `diabetic_data.csv` y `IDS_mapping.csv` en la raíz (movidos a `data/raw/`).
+
+Se volvió a correr el pipeline completo (`01`→`03`→`04`→`05`→`06`→`07`) sobre la estructura fusionada para confirmar que los resultados no cambiaron respecto a los de las Secciones 1-6 (mismo modelo principal, mismas métricas) — la fusión fue puramente de organización de archivos, no tocó ninguna fórmula ni ningún número.
+
+## 8. Qué NO se hizo (a propósito)
 
 - **No se implementó una corrección a la razón de selección del 80%** (equidad). Requeriría rediseñar el mecanismo de cupo (`K_ALTO`) para que sea estratificado por grupo o agregar post-procesamiento de igualdad de oportunidad (Hardt et al., 2016) — es una decisión de diseño con implicancias éticas/regulatorias que debe validarse con el equipo antes de implementarse, no algo para decidir unilateralmente bajo presión de tiempo. Queda documentado como bloqueante de despliegue.
 - **No se forzó el Brier score a cumplir la meta** (quedó en 0.0963 vs. ≤0.095) inflando artificialmente la calibración o recortando la muestra de validación. Se prefirió reportar el número real y explicarlo con literatura (el techo de discriminación ~0.67 ROC-AUC ya está documentado en la literatura de este problema).
 - **No se hizo `git commit` ni `git push`** de ninguno de estos cambios — quedan solo en el working tree, a la espera de que el equipo revise y decida qué commitear.
+- **No se hizo un `git merge`/`git rebase` real de la rama `temp`.** Se trajeron sus archivos con `git checkout origin/temp -- <rutas>` (copia limpia, sin historial de merge) porque `main` tenía cambios sin commitear que un merge real habría puesto en riesgo. La rama `temp` en sí sigue existiendo tal cual en el remoto, sin tocar; alguien del equipo debería decidir si se borra una vez que esto se commitee, para no dejar dos copias del pipeline dando vueltas.
