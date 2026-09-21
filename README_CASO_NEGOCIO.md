@@ -69,23 +69,25 @@ Acá es donde este caso de negocio intenta ser más honesto que el típico "el R
 
 Entonces el costo de mantenimiento se construyó de abajo hacia arriba, sumando piezas concretas (todas marcadas como supuestos razonables, no cifras mágicas):
 
+**Actualización (20 de septiembre de 2026):** ya existe una estimación de costos de infraestructura AWS con tarifas públicas reales, publicada en [`despliegue/PROPUESTA_IMPLEMENTACION_SAGEMAKER.md`](despliegue/PROPUESTA_IMPLEMENTACION_SAGEMAKER.md) (Sección 9). De ahí sale el número de cómputo de la tabla de abajo, que reemplaza el placeholder genérico de \$60/mes que se usaba antes. Una aclaración importante: esa propuesta estima el costo **total** de operar el sistema en producción — endpoint de inferencia, ingesta SFTP, red privada (VPN/PrivateLink) y almacenamiento incluidos — en unos \$709–\$730 al mes (≈\$8,512–\$8,762 al año). La mayor parte de ese monto (endpoint, SFTP, red) es el costo de **servir el modelo en producción**, que se paga igual bajo la Política A (sin monitoreo) que bajo la Política B (con monitoreo): no es un costo atribuible a la decisión de monitorear, así que no entra en la tabla de abajo. Lo único que sí es atribuible al monitoreo es el cómputo de los jobs de SageMaker Processing/Training (el job batch de PSI/KS/calibración y los reentrenamientos), que es lo que se actualiza aquí, con el escenario más caro de los dos que ofrece la propuesta (90 h de instancia/mes, \$0.23/h) para no subestimar.
+
 | Concepto | Supuesto | Costo anual estimado |
 |---|---|---|
 | Revisión mensual de PSI/KS/calibración por subgrupo | 3 horas/mes de un data scientist a \$70/hora | 3 × 70 × 12 = \$2,520 |
-| Cómputo del monitoreo (job batch mensual) | \$60/mes | 60 × 12 = \$720 |
+| Cómputo del monitoreo (job batch mensual, SageMaker Processing) | \$20.70/mes — 90 h de instancia × \$0.23/h, escenario de referencia de `despliegue/PROPUESTA_IMPLEMENTACION_SAGEMAKER.md` §9 | 20.70 × 12 ≈ \$248 |
 | Reentrenamientos disparados por el módulo de drift | 16 horas de trabajo + \$40 de cómputo, por evento; en el horizonte evaluado se disparó 1 evento en 7 bloques pseudo-anuales | (16×70+40) × (1/7) ≈ \$166 |
-| **Total** | | **≈ \$3,406 al año** |
+| **Total** | | **≈ \$2,934 al año** |
 
 ## El resultado final
 
 | | |
 |---|---|
 | Ahorro bruto anual (con 50,000 altas/año) | \$388,573 |
-| Costo de mantenimiento anual | \$3,406 |
-| **Beneficio neto anual** | **\$385,167** |
-| **Retorno sobre la inversión (ROI)** | **≈113 veces** |
+| Costo de mantenimiento anual | \$2,934 |
+| **Beneficio neto anual** | **\$385,639** |
+| **Retorno sobre la inversión (ROI)** | **≈132 veces** |
 
-O sea: por cada dólar que cuesta mantener el sistema de monitoreo, se ahorran del orden de 113 dólares en costos de reingreso mal gestionados. Incluso si tus supuestos de costo de mantenimiento están subestimados por un factor de 10 (algo bastante generoso, dado que la partida más grande ya es la revisión humana, que es la más cara de las tres), el sistema seguiría siendo largamente rentable.
+O sea: por cada dólar que cuesta mantener el sistema de monitoreo, se ahorran del orden de 132 dólares en costos de reingreso mal gestionados. Incluso si tus supuestos de costo de mantenimiento están subestimados por un factor de 10, el sistema seguiría siendo largamente rentable.
 
 ## Lo que este número NO incluye (para no venderlo de más)
 
@@ -101,6 +103,7 @@ Todo el cálculo está en la Sección 14 de `notebooks/07_drift_monitoreo.ipynb`
 - `resultados/caso_negocio_por_bloque.csv` — la tabla de ahorro bloque por bloque.
 - `resultados/caso_negocio_resumen.csv` — el resumen anualizado (los números de este documento).
 - `resultados/fig_caso_negocio.png` — el gráfico de barras que compara las cuatro cifras (sin monitoreo, con monitoreo, mantenimiento, beneficio neto).
+- `despliegue/PROPUESTA_IMPLEMENTACION_SAGEMAKER.md` (Sección 9) — de donde sale el costo de cómputo del monitoreo usado en la tabla de mantenimiento, con la estimación completa de infraestructura AWS de producción.
 
 Si quieres probar con tu propio volumen de altas anuales, basta con cambiar `ALTAS_ANUALES` al inicio de esa celda y volver a correrla — todo lo demás se recalcula solo.
 

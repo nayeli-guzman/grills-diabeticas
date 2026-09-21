@@ -7,12 +7,12 @@ Concepto & Valor anual (US\$, 50,000 altas/año) \\
 Costo esperado \textbf{sin} monitoreo (estático, umbral fijo) & \$90,268,164 \\
 Costo esperado \textbf{con} monitoreo adaptativo (E3, $S=3$) & \$89,879,592 \\
 \textbf{Ahorro bruto atribuible al monitoreo de drift} & \textbf{\$388,573} \\
-Costo de mantenimiento del sistema (monitoreo + reentrenos) & \$3,406 \\
-\textbf{Beneficio neto} & \textbf{\$385,167} \\
-Retorno sobre la inversión (ROI) & 113x \\
+Costo de mantenimiento del sistema (monitoreo + reentrenos) & \$2,934 \\
+\textbf{Beneficio neto} & \textbf{\$385,639} \\
+Retorno sobre la inversión (ROI) & 132x \\
 \bottomrule
 \end{tabular}
-\caption{Caso de negocio anualizado (supuesto de escala: 50,000 altas/año). El ahorro bruto surge de comparar, bloque a bloque, la misma simulación de costos de la Sección de capa de decisión bajo dos políticas: modelo estático sin monitoreo vs. estrategia adaptativa E3 ($S=3$) disparada por el módulo de drift.}
+\caption{Caso de negocio anualizado (supuesto de escala: 50,000 altas/año). El ahorro bruto surge de comparar, bloque a bloque, la misma simulación de costos de la Sección de capa de decisión bajo dos políticas: modelo estático sin monitoreo vs. estrategia adaptativa E3 ($S=3$) disparada por el módulo de drift. El costo de mantenimiento incorpora el cómputo real de los jobs de SageMaker Processing estimado en \texttt{despliegue/PROPUESTA\_IMPLEMENTACION\_SAGEMAKER.md} (Sección 9), que reemplaza el supuesto genérico usado previamente.}
 \label{tab:caso-negocio}
 \end{table}
 
