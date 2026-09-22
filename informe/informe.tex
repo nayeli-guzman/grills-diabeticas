@@ -84,17 +84,13 @@ El médico es quien decide. El sistema nunca da de alta ni cambia un tratamiento
 % =====================================================================
 
 \subsection{Objetivo General}
-Implementar un sistema predictivo que evalúe a pacientes diabéticos para identificar su riesgo de reingreso hospitalario a 30 días, con el fin de disminuir esta cifra y mantener su desempeño confiable a lo largo del tiempo.
+Implementar un sistema inteligente de predicción de reingreso hospitalario a 30 días en pacientes diabéticos que, a partir del análisis del historial clínico de admisiones y del diseño de una arquitectura de modelado y monitoreo continuo, mantenga su desempeño confiable ante los cambios en los datos a lo largo del tiempo y respalde la toma de decisiones clínicas bajo un esquema \emph{Human-in-the-Loop}.
 
 \subsection{Objetivos Específicos}
 \begin{enumerate}[leftmargin=*]
-    \item Diseñar e implementar el flujo de ingesta y preprocesamiento de datos del historial de atención, preservando la secuencialidad estricta de las admisiones para evitar la fuga de información durante la validación e inferencia.
-    \item Construir y comparar modelos de clasificación supervisada para predecir el riesgo de reingreso a 30 días, evaluando su capacidad discriminativa inicial sobre los registros secuenciales.
-    \item Desarrollar un componente de calibración de probabilidades y estimación de incertidumbre que marque para revisión médica los casos donde la confianza del modelo sea insuficiente.
-    \item Diseñar la arquitectura del sistema y su esquema de despliegue, integrando un motor de decisión basado en matrices de utilidad y costos ponderados del error, con umbrales que se ajustan dinámicamente según el contexto operativo del hospital.
-    \item Establecer una estrategia de monitoreo por ventanas fijas secuenciales que detecte oportunamente la degradación del modelo y active protocolos de reentrenamiento ante cambios en los patrones de los datos.
-    \item Evaluar el desempeño del sistema bajo distintos escenarios de monitoreo y definir los protocolos de acción clínica asociados a cada nivel de riesgo, en línea con el esquema HITL.
-    \item \textbf{(Ampliación de esta entrega)} Ejecutar el pipeline de principio a fin, auditar la ausencia de fuga de información también en el módulo de monitoreo, e iterar sobre las métricas técnicas hasta alcanzar valores defendibles frente a la literatura, cuantificando el valor económico de la estrategia de monitoreo.
+    \item \textbf{Análisis de la información.} Analizar el historial clínico secuencial de las admisiones hospitalarias, preservando su orden temporal durante el preprocesamiento para evitar la fuga de información, y comparar distintos modelos de clasificación supervisada junto con estrategias de calibración de probabilidades, con el fin de determinar el enfoque más confiable para estimar el riesgo de reingreso a 30 días.
+    \item \textbf{Diseño del sistema.} Diseñar la arquitectura del sistema, incluyendo un motor de decisión basado en matrices de utilidad y costos ponderados del error con umbrales adaptables al contexto operativo del hospital, y una estrategia de monitoreo por ventanas temporales que permita detectar oportunamente la degradación del modelo.
+    \item \textbf{Implementación y despliegue.} Implementar y desplegar de punta a punta el pipeline de datos, el modelo predictivo y el módulo de monitoreo, evaluando el desempeño del sistema bajo distintos escenarios y estableciendo los protocolos de acción clínica asociados a cada nivel de riesgo, con el fin de obtener un sistema validado y un caso de negocio que cuantifique su valor económico.
 \end{enumerate}
 
 % =====================================================================

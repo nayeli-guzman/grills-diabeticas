@@ -1,0 +1,33 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {section}{\numberline {1}Descripción del Problema y Caso de Uso}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Descripción del Problema}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Caso de uso}{3}{subsection.1.2}%
+\contentsline {section}{\numberline {2}Definición de Objetivos}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Objetivo General}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Objetivos Específicos}{4}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Definición de Restricciones}{4}{section.3}%
+\contentsline {section}{\numberline {4}Métricas de Éxito}{5}{section.4}%
+\contentsline {section}{\numberline {5}Diseño del Sistema de IA y Arquitectura}{5}{section.5}%
+\contentsline {paragraph}{¿El pipeline implementado sigue este diagrama?}{6}{figure.caption.1}%
+\contentsline {subsection}{\numberline {5.1}Fusión con la rama \texttt {temp}}{7}{subsection.5.1}%
+\contentsline {section}{\numberline {6}Auditoría de Calidad de Datos y Corrección de Fugas Temporales}{7}{section.6}%
+\contentsline {section}{\numberline {7}Modelado y Evaluación Temporal (Fase 3)}{8}{section.7}%
+\contentsline {section}{\numberline {8}Monitoreo y Adaptación ante Data/Concept Drift}{8}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Metodología: ventanas fijas pseudo-temporales}{8}{subsection.8.1}%
+\contentsline {paragraph}{Nota de consistencia con el plan de trabajo original.}{9}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Resultados: distribución de \emph {features} (PSI)}{9}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Resultados: curva de degradación (E1) y comparación de estrategias}{10}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}Granularidad del monitoreo}{11}{subsection.8.4}%
+\contentsline {section}{\numberline {9}Capa de Decisión: Incertidumbre, Categorías y Costos}{11}{section.9}%
+\contentsline {section}{\numberline {10}Caso de Negocio: Valor Económico del Monitoreo de Drift}{12}{section.10}%
+\contentsline {section}{\numberline {11}Auditoría de Equidad}{13}{section.11}%
+\contentsline {section}{\numberline {12}Explicabilidad (SHAP) y Latencia}{14}{section.12}%
+\contentsline {section}{\numberline {13}Tabla Resumen de Criterios de Aprobación}{14}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Discusión de los criterios no cumplidos}{15}{subsection.13.1}%
+\contentsline {section}{\numberline {14}Cronograma de Actividades}{16}{section.14}%
+\contentsline {section}{\numberline {15}Propuesta de Despliegue y Gestión de Riesgos}{16}{section.15}%
+\contentsline {subsection}{\numberline {15.1}Propuesta de despliegue}{16}{subsection.15.1}%
+\contentsline {subsection}{\numberline {15.2}Riesgos identificados}{17}{subsection.15.2}%
+\contentsline {section}{\numberline {16}Limitaciones Conocidas y Trabajo Futuro}{17}{section.16}%
+\contentsline {section}{\numberline {17}Conclusiones}{17}{section.17}%
+\contentsline {section}{Bibliografía}{18}{Item.15}%

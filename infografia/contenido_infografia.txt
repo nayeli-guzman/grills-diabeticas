@@ -1,0 +1,203 @@
+CONTENIDO PARA INFOGRAFÍA DE EXPOSICIÓN
+Proyecto: Sistema Inteligente Adaptativo para la Predicción de Reingreso Hospitalario en Pacientes Diabéticos
+Curso: Planificación y Toma de Decisiones en IA — UTEC 2026-I
+Equipo: Jimena Gurbillon, Maria Surco, Nayeli Guzman, Bihonda Epiquien, Andrea Coa
+
+============================================================
+INSTRUCCIONES GENERALES PARA QUIEN DISEÑE LA INFOGRAFÍA
+============================================================
+- Es para una EXPOSICIÓN evaluada con una rúbrica de 5 etapas (3.1 a 3.5, ver abajo). La infografía DEBE mostrar evidencia de las 5 etapas — no es opcional, es lo que se califica. Cada sección de este archivo está etiquetada con la etapa de la rúbrica que cubre.
+- Todos los números, nombres de variables, nombres de técnicas y citas son REALES, extraídos directamente del informe del proyecto. No inventar cifras nuevas ni suavizar el texto a frases genéricas de infografía ("la IA transforma...", "en un mundo digital..."). Usar el vocabulario técnico específico que aparece aquí (nombres de variables, nombres de pruebas, nombres de estrategias) — eso es lo que hace que se vea como un proyecto real y no una plantilla.
+- Formato sugerido: 1 poster grande (o 2 si hace falta), o una secuencia de slides tipo infografía para proyectar durante la expo. Si es 1 solo poster, las 5 etapas de la rúbrica pueden ir como 5 columnas o 5 bloques numerados con el mismo tratamiento visual (mismo tamaño de encabezado), para que sea evidente que se cubrieron todas.
+- Jerarquía visual sugerida (no todo pesa igual):
+  · MÁXIMO peso visual: Objetivo general, Arquitectura (diagrama), Resultado de negocio (los 3 números grandes), Estrategia ganadora de drift.
+  · Peso medio: Objetivos específicos, Modelos comparados, Despliegue, Restricciones.
+  · Peso bajo (texto pequeño / notas al pie, pero deben estar presentes): Métricas de éxito detalladas, auditoría de fugas, equidad, riesgos.
+- Colores sugeridos: paleta clínica/tech — azul petróleo o azul médico como color primario, blanco/gris muy claro de fondo, un acento cálido (ámbar o rojo) reservado ÚNICAMENTE para "Riesgo Alto" / alertas, y un verde para "cumple" / resultados positivos. Evitar usar el acento de alerta en otro lugar para que mantenga su significado semántico (alto riesgo).
+- Tipografía: un sans-serif geométrico para títulos/números grandes (los 3 números del caso de negocio deben ser lo más grande de todo el poster) y un texto legible para los bloques de descripción.
+
+============================================================
+BLOQUE 0 — HOOK / PORTADA
+============================================================
+Título:
+"Sistema Inteligente Adaptativo para la Predicción de Reingreso Hospitalario en Pacientes Diabéticos"
+
+Dato de impacto (tipografía grande, arriba de todo):
+"27.1%" — mediana de reingresos hospitalarios considerados evitables (rango entre estudios: 5%–79%)
+
+Contexto (2-3 líneas):
+- Un paciente diabético dado de alta puede reingresar al hospital antes de 30 días (reingreso no planificado). El Hospital Readmissions Reduction Program (HRRP, EE. UU., desde 2012) penaliza económicamente a los hospitales por exceso de reingresos; la diabetes no es una condición objetivo del programa, pero es una comorbilidad muy frecuente en las condiciones que sí penaliza.
+- El reingreso no depende solo del paciente: depende también del proceso de atención (conciliación de medicamentos, claridad de indicaciones al alta).
+- Pregunta que guía el proyecto: ¿se puede identificar en los propios datos el momento en que los patrones clínicos cambian, para no confiar en un modelo que ya quedó obsoleto?
+
+============================================================
+ETAPA 3.1 — OBJETIVOS, RESTRICCIONES Y DISEÑO DEL SISTEMA
+============================================================
+
+--- OBJETIVO GENERAL (máximo peso visual, cita textual) ---
+"Implementar un sistema inteligente de predicción de reingreso hospitalario a 30 días en pacientes diabéticos que, a partir del análisis del historial clínico de admisiones y del diseño de una arquitectura de modelado y monitoreo continuo, mantenga su desempeño confiable ante los cambios en los datos a lo largo del tiempo y respalde la toma de decisiones clínicas bajo un esquema Human-in-the-Loop."
+
+--- OBJETIVOS ESPECÍFICOS (3, usar como 3 tarjetas/íconos) ---
+1. Análisis y comparación de la información — Analizar el historial clínico secuencial de las admisiones (preservando su orden temporal para evitar fuga de información) y comparar distintos modelos de clasificación y estrategias de calibración, para determinar el enfoque más confiable.
+2. Diseño del sistema de IA y su arquitectura — Diseñar la arquitectura del sistema, integrando un motor de decisión basado en matrices de utilidad y costos ponderados del error, y una estrategia de monitoreo por ventanas temporales.
+3. Implementación, integración y despliegue — Implementar y desplegar de punta a punta el pipeline de datos, el modelo predictivo y el módulo de monitoreo, obteniendo un sistema validado cuyo valor económico se cuantifica mediante un caso de negocio.
+
+--- RESTRICCIONES (4, usar como 4 íconos pequeños con 1 línea cada uno) ---
+1. Secuencialidad temporal — prohibido el K-Fold cross-validation convencional; la validación debe ser división temporal estricta o rolling window (evita fuga de información del futuro).
+2. Autonomía y decisión clínica — el sistema no puede modificar prescripciones ni emitir altas/bajas médicas de forma autónoma (esquema Human-in-the-Loop).
+3. Latencia de inferencia — la predicción debe calcularse en menos de 2 segundos para no afectar el flujo clínico en el momento del alta.
+4. Privacidad y normativa (HIPAA / regla HTI-1 de la ONC) — el pipeline debe replicar los controles de anonimización del dataset antes de que cualquier dato ingrese al módulo predictivo.
+
+--- MÉTRICAS DE ÉXITO (3 dimensiones — mencionar aunque sea en texto pequeño, son parte explícita de la rúbrica) ---
+Técnicas: ROC-AUC ≥ 0.66 · PR-AUC ≥ 0.20 (lift ≥ 1.8×) · Brier score ≤ 0.095
+De decisión: Beneficio neto (curva de decisión) > políticas de referencia · Costo esperado por cada 1,000 altas · Impacto proyectado ≥ 5% de reducción de reingresos
+Sociales: Igualdad de oportunidad (razón FNR entre 0.87–1.15) · Disparate impact ≥ 0.80 (regla del 80%) · Calibración por subgrupo
+
+--- DISEÑO DEL SISTEMA / ARQUITECTURA (máximo peso visual — usar arquitectura.png como base) ---
+El sistema opera integrado en el flujo clínico del hospital (no es una app aparte): al finalizar la evaluación clínica del paciente, el módulo predictivo se activa automáticamente y muestra el riesgo estimado en la pantalla de "Resumen de Alta" del EHR.
+
+Los 6 módulos (mapean directamente a lo pedido por la rúbrica: adquisición de datos, módulo predictivo, manejo de incertidumbre, módulo de decisión, componente de acción):
+1. Adquisición e integración de datos — ingesta continua desde la Historia Clínica Electrónica (EHR): variables demográficas, clínicas, diagnósticos, esquema de medicación. Fuente actual: datos tabulares estructurados; extensión futura contemplada: notas clínicas de texto libre (fuente multimodal).
+2. Módulo predictivo adaptativo — preprocesamiento en tiempo real e inferencia con el modelo activo (Random Forest).
+3. Manejo de incertidumbre — calibración de probabilidades (Platt Scaling / Isotonic Regression) y marca "Incertidumbre Alta" cuando el intervalo de confianza cruza el umbral de decisión.
+4. Toma de decisiones y clasificación de riesgo — matriz de utilidad que traduce la probabilidad en Bajo / Moderado / Alto, con umbral dinámico según la capacidad hospitalaria disponible.
+5. Acción e intervención — Bajo: seguimiento ambulatorio estándar. Moderado: alerta de control a 7 días + kit educativo. Alto: cita presencial prioritaria + conciliación farmacológica urgente + gestor de caso.
+6. Monitoreo de drift — evalúa periódicamente el rendimiento del modelo y dispara reentrenamiento; retroalimenta a los módulos 2 y 3.
+
+Mensaje clave sobre autonomía (destacar):
+"El médico decide. El sistema solo recomienda." (Human-in-the-Loop)
+
+============================================================
+ETAPA 3.2 — ANÁLISIS Y PREPARACIÓN DE DATOS
+============================================================
+Dataset (con ícono de base de datos):
+"Más de 100,000 hospitalizaciones de pacientes diabéticos en 130 hospitales de EE. UU. (1999–2008)" — Diabetes 130-US hospitals, UCI Machine Learning Repository.
+
+Exploración temporal — qué se encontró:
+- No hay fecha de admisión explícita en el dataset, así que el equipo validó `encounter_id` como proxy cronológico: el siguiente encuentro del mismo paciente registra hospitalizaciones previas en 84.9% de los casos (vs. solo 47.4% si se ordenara al revés) — evidencia de que el orden es real, no aleatorio.
+- El dataset se dividió en 10 ventanas pseudo-temporales de tamaño equivalente (bloques 1 a 10, simulando periodos anuales).
+
+Ingeniería de características temporales (feature engineering):
+- Variables de contexto en ventana deslizante: `ctx_readmit_rate`, `ctx_inpatient_mean`, `ctx_a1c_rate`.
+- Variables rezagadas / agregadas por periodo: `rel_number_diagnoses`, `rel_num_medications`.
+- Hallazgo importante (mostrar como caso de "rigor científico", no solo como técnica): estas variables de contexto se probaron y luego se DESCARTARON, porque actuaban como un atajo temporal (el modelo "adivinaba" en qué año estaba en vez de aprender un patrón clínico real), lo que invalidaba las curvas de drift.
+
+División train / validación / prueba:
+- División estrictamente secuencial en bloques (nunca aleatoria) para respetar el orden temporal.
+- Auditoría anti-fuga de información: batería de 13 pruebas (disponibilidad de variables al alta, cribado univariado, identificadores, separación perfecta, latencia de etiqueta, contaminación entre conjuntos, etiquetas permutadas, desempeño plausible, pacientes vistos vs. nuevos, variables de contexto, dominancia de variables y reproducibilidad).
+- Se detectó y corrigió una fuga real: el "embargo" de latencia de etiqueta era insuficiente (se corrigió de 850 a 2,000 encuentros) para evitar que reingresos de entrenamiento contaminaran la validación.
+
+============================================================
+ETAPA 3.3 — MODELADO Y EVALUACIÓN
+============================================================
+Los 3 modelos comparados (2 tradicionales + 1 avanzado, como pide la rúbrica; destacar el ganador):
+
+| Modelo | Tipo | ROC-AUC | PR-AUC | Justificación |
+- ElasticNet — tradicional (regresión logística regularizada) — ROC-AUC 0.652, PR-AUC 0.213 — baseline lineal, interpretable.
+- Random Forest ⭐ GANADOR — tradicional (ensamble de árboles) — ROC-AUC 0.664, PR-AUC 0.215 — mejor balance de las 3 métricas iniciales; robusto con variables mixtas.
+- XGBoost — avanzado (gradient boosting) — ROC-AUC 0.653, PR-AUC 0.192 — mayor capacidad teórica para interacciones no lineales entre diagnósticos, medicación y estancia, pero no superó a Random Forest en este dataset.
+
+Validación temporal: TimeSeriesSplit (3 folds) sobre el 80% inicial de la ventana de entrenamiento; calibración sobre el 20% final eligiendo automáticamente entre Platt Scaling e Isotonic Regression según cuál minimiza el Brier score.
+
+Comportamiento del modelo en el tiempo (degradación) — este es el puente hacia la Etapa 3.5:
+"El modelo estático (entrenado una sola vez, sin actualizarse) pierde ROC-AUC y PR-AUC progresivamente a medida que avanzan los bloques de prueba — evidencia visual en fig_E1_degradacion.png." Esto es lo que justifica todo el sistema de monitoreo de drift.
+
+============================================================
+ETAPA 3.4 — DESPLIEGUE DEL SISTEMA
+============================================================
+(Esta etapa NO estaba en la versión anterior de la infografía — es obligatoria según la rúbrica.)
+
+Arquitectura de implementación:
+Despliegue por microservicios en contenedor (Docker) sobre infraestructura IaaS/PaaS de nube (no on-premises). El monitoreo de drift corre en batch periódico; el módulo predictivo sirve inferencia síncrona con SLA < 2 segundos. Se escalan y versionan por separado. Reproducibilidad garantizada con registro de experimentos (MLflow).
+
+Flujo de datos:
+EHR → ingesta y validación de esquema → preprocesamiento → inferencia → acción clínica, con una rama paralela de cómputo periódico de PSI/KS/ROC-AUC que alimenta el criterio de reentrenamiento.
+
+Frecuencia de actualización:
+NO sigue un calendario fijo. Es condicional: se dispara el reentrenamiento cuando el módulo de drift detecta degradación bloque a bloque (criterio E4, ver Etapa 3.5). Cada modelo candidato corre primero en paralelo antes de reemplazar al modelo en producción (shadow deployment) y requiere aprobación humana.
+
+Nivel de autonomía:
+Parcial y acotada (Human-in-the-Loop): el sistema recomienda, el médico decide. Ningún reentrenamiento automático reemplaza el modelo en producción sin validación humana — esto es también la mitigación al riesgo de "perder el control" de un sistema que se actualiza solo.
+
+Desafíos de escalabilidad, costos e integración:
+- Costos: cómputo de reentrenamiento y monitoreo por cada sede hospitalaria adicional.
+- Integración: esquemas de EHR heterogéneos entre hospitales; migrar el proxy `encounter_id` a una fecha real de admisión en cualquier despliegue real (en este dataset histórico no existe fecha explícita).
+
+Riesgos identificados y su mitigación (usar como tabla pequeña de 4 filas):
+1. Drift silencioso entre ciclos de monitoreo → mayor frecuencia de chequeo en periodos de alta variabilidad; alertas automáticas si PSI > 0.25.
+2. Fatiga de alertas clínicas (exceso de Alto Riesgo reduce la atención real a cada alerta) → cupo máximo de 15% de pacientes en Alto Riesgo por bloque.
+3. Inequidad en la selección de Alto Riesgo (ver Etapa de resultados) → no desplegar sin resolver; evaluar cupos estratificados por subgrupo.
+4. Fuga de información en cambios futuros al pipeline / dependencia de encounter_id como proxy → repetir la batería de 13 pruebas ante cualquier variable nueva; migrar a fecha real de alta en producción.
+
+============================================================
+ETAPA 3.5 — DETECCIÓN Y ADAPTACIÓN AL CONCEPT DRIFT
+(el diferencial del proyecto — máximo peso visual)
+============================================================
+Imágenes de referencia: fig_psi_heatmap.png · fig_E1_degradacion.png · fig_E1_E4_estrategias.png
+
+Marco conceptual (definición corta, útil para la expo oral):
+Existe drift cuando la relación entre los datos y la etiqueta cambia con el tiempo. Se distingue drift real (cambia la relación variable→etiqueta, exige reentrenar) de drift virtual (cambian los datos de entrada sin alterar esa relación, puede afectar la calibración sin afectar necesariamente la discriminación del modelo).
+
+Técnicas de detección aplicadas:
+- Population Stability Index (PSI) por variable y por bloque, comparado contra el bloque de referencia (B1).
+- Prueba de Kolmogorov-Smirnov (variables numéricas) y chi-cuadrado (variables categóricas), con corrección de Bonferroni por comparaciones múltiples.
+- Variables clínicas monitoreadas: uso de insulina, número de diagnósticos, procedimientos, urgencias, y race (esta última específicamente para trazabilidad de equidad).
+- Resultado: de 153 combinaciones variable×bloque evaluadas, 131 se mantuvieron estables, 14 en vigilancia y solo 8 mostraron alerta real (PSI > 0.25), concentradas en 2 variables (number_diagnoses_capped y admission_type_grp) desde el bloque 7-8 en adelante.
+
+Impacto del drift bajo distintos tamaños de ventana (variación de la ventana deslizante, pedido explícito de la rúbrica):
+Se repitió el experimento con ventanas de G = 5, 10 y 15 bloques: una granularidad más fina detecta el drift antes, a costa de ventanas de entrenamiento más pequeñas y con más ruido — es un trade-off, no una respuesta única.
+
+4 estrategias de adaptación comparadas (usar como tabla o barras comparativas — esta es LA tabla clave del proyecto):
+- E1 Estático (sin reentrenar) — ROC-AUC 0.662 — la línea base que se degrada.
+- E2 Ventana expansiva (usa todo el historial acumulado) — ROC-AUC 0.676.
+- E3 Ventana deslizante S=3 bloques ⭐ GANADORA — ROC-AUC 0.680, PR-AUC 0.226 — mejor PR-AUC promedio de las 4; coincide con el tamaño de ventana propuesto originalmente en el plan de trabajo.
+- E4 Disparador informado (reentrena solo si ROC-AUC cae >0.03, la calibración se sale de rango, o el PSI supera 0.25 en variables clave) — ROC-AUC 0.674 — combina detección basada en tasa de error y en distribución.
+
+Reflexión crítica sobre riesgos de sistemas dinámicos (pedido explícito de la rúbrica — no omitir):
+"Un sistema que se reentrena solo introduce un riesgo propio: puede perder estabilidad o degradarse silenciosamente en producción sin que nadie lo note. Por eso el esquema Human-in-the-Loop y el shadow deployment no son un detalle de implementación — son la salvaguarda directa contra ese riesgo: ningún modelo candidato reemplaza al de producción sin validar primero en paralelo y sin aprobación humana."
+
+============================================================
+RESULTADOS Y CASO DE NEGOCIO (el clímax visual del poster)
+============================================================
+Resultado técnico consolidado:
+"18 de 23 criterios de éxito definidos se cumplen" — los 5 que no se cumplen (Brier score, costo esperado en el escenario más optimista, impacto proyectado, razón de selección por equidad, incertidumbre alta) se documentan con su causa (techo de discriminación del modelo, ROC-AUC ≈ 0.67) en vez de forzarse u ocultarse.
+
+Pregunta que responde este bloque:
+"¿Vale la pena construir y mantener el monitoreo de drift, o basta con desplegar el modelo una vez?"
+
+LOS 3 NÚMEROS MÁS GRANDES DE TODO EL POSTER:
+1. $385,639 — Beneficio neto anual proyectado (escala: 50,000 altas/año)
+2. 132x — Retorno sobre la inversión (ROI)
+3. 16x — Cuánto crece el ahorro por cada 1,000 altas entre el bloque 4 y el bloque 10 (el valor del monitoreo AUMENTA con el tiempo, no es constante)
+
+Desglose de apoyo (texto más pequeño):
+- Costo esperado SIN monitoreo: $90,268,164/año · CON monitoreo adaptativo: $89,879,592/año
+- Ahorro bruto atribuible al monitoreo: $388,573/año
+- Costo de mantener el sistema (monitoreo + reentrenos): solo $2,934/año
+
+Frase de cierre de este bloque:
+"El monitoreo de drift se paga solo."
+
+Equidad y responsabilidad (bloque chico, honesto):
+✓ Cumple: igualdad de oportunidad entre grupos de edad y raza — todos los grupos evaluables (≥100 reingresos) cumplen la razón de FNR dentro de 0.87–1.15.
+✗ No cumple (se documenta como limitación conocida, no se oculta): la selección para atención prioritaria de Alto Riesgo no logra equilibrio entre subgrupos (0.38 observado vs. meta de 0.80) por el mecanismo de cupo global — se propone como trabajo futuro evaluar cupos estratificados.
+
+============================================================
+CIERRE
+============================================================
+Mensaje final (grande):
+"Un sistema que no solo predice el riesgo de un paciente — predice cuándo dejar de confiar en sí mismo, y ese autocontrol se paga solo."
+
+Créditos:
+Jimena Gurbillon · Maria Surco · Nayeli Guzman · Bihonda Epiquien · Andrea Coa
+Planificación y Toma de Decisiones en IA — UTEC 2026-I
+Dataset: Diabetes 130-US hospitals (UCI Machine Learning Repository)
+
+============================================================
+LISTA DE IMÁGENES INCLUIDAS EN ESTA CARPETA
+============================================================
+- arquitectura.png → Etapa 3.1 (diagrama de flujo del sistema, se puede simplificar visualmente pero mantener los 6 módulos numerados)
+- fig_psi_heatmap.png → Etapa 3.5 (estabilidad de variables en el tiempo, mapa de calor)
+- fig_E1_degradacion.png → Etapa 3.3 / 3.5 (curva de degradación del modelo estático — el puente narrativo entre "por qué monitorear" y "cómo monitoreamos")
+- fig_E1_E4_estrategias.png → Etapa 3.5 (comparación visual de las 4 estrategias E1-E4)
+- fig_caso_negocio.png → Bloque de resultados (visualización del ahorro anual)
