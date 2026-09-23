@@ -1,6 +1,6 @@
 # El caso de negocio, explicado con calma
 
-Este documento explica, paso a paso y sin apurarse, la pregunta que responde el Módulo de Caso de Negocio (Sección 14 de `notebooks/07_drift_monitoreo.ipynb`): **¿vale la pena construir y mantener todo este sistema de monitoreo de drift, o es un gasto de ingeniería que no se justifica?** En el informe (`informe/informe.pdf`) esto aparece resumido en media página; acá va la versión larga, con el razonamiento completo y de dónde sale cada número.
+Este documento explica, paso a paso y sin apurarse, la pregunta que responde el Módulo de Caso de Negocio (Sección 14 de `notebooks/07_drift_monitoreo.ipynb`): **¿vale la pena construir y mantener todo este sistema de monitoreo de drift, o es un gasto de ingeniería que no se justifica?** En el informe (`informe.pdf`) esto aparece resumido en media página; acá va la versión larga, con el razonamiento completo y de dónde sale cada número.
 
 ## La pregunta, en cristiano
 

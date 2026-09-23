@@ -1,6 +1,6 @@
 # Data Drift & Concept Drift — documentación completa
 
-Este documento detalla el módulo de monitoreo y adaptación ante drift del sistema de predicción de reingreso hospitalario: qué se mide, cómo, con qué resultados, y qué limitaciones tiene. Es la referencia técnica de la Sección 8-10 de `informe/informe.tex`. Vive principalmente en `notebooks/07_drift_monitoreo.ipynb` (Secciones 7-14), construido sobre el modelo elegido en `notebooks/04_modelado.ipynb` (Fase 3).
+Este documento detalla el módulo de monitoreo y adaptación ante drift del sistema de predicción de reingreso hospitalario: qué se mide, cómo, con qué resultados, y qué limitaciones tiene. Es la referencia técnica de la Sección 7-10 de `informe.pdf`. Vive principalmente en `notebooks/07_drift_monitoreo.ipynb` (Secciones 7-14), construido sobre el modelo elegido en `notebooks/04_modelado.ipynb` (Fase 3).
 
 ## 1. Marco conceptual
 
@@ -84,7 +84,7 @@ No es estrictamente "drift", pero consume directamente sus resultados: el umbral
 | **Beneficio neto** | **\$385,167** |
 | ROI | ~113× |
 
-Lo más revelador no es el promedio sino la tendencia por bloque: el ahorro por cada 1,000 altas crece de **\$924 (bloque 4) a \$15,114 (bloque 10)** — más de 16×. El valor del monitoreo **no es constante**: crece con el tiempo, a medida que el drift se acumula y la brecha entre "modelo que nunca se actualiza" y "modelo que sí se actualiza" se agranda. Esa es, en una frase, la justificación económica de todo este módulo. Detalle completo, metodología del costo de mantenimiento (construido de abajo hacia arriba, no supuesto en cero) y literatura de respaldo en `informe/informe.tex`, Sección 10.
+Lo más revelador no es el promedio sino la tendencia por bloque: el ahorro por cada 1,000 altas crece de **\$924 (bloque 4) a \$15,114 (bloque 10)** — más de 16×. El valor del monitoreo **no es constante**: crece con el tiempo, a medida que el drift se acumula y la brecha entre "modelo que nunca se actualiza" y "modelo que sí se actualiza" se agranda. Esa es, en una frase, la justificación económica de todo este módulo. Detalle completo, metodología del costo de mantenimiento (construido de abajo hacia arriba, no supuesto en cero) y literatura de respaldo en `informe.pdf`, Sección 10.
 
 Archivos: `resultados/caso_negocio_resumen.csv`, `resultados/caso_negocio_por_bloque.csv`, `resultados/fig_caso_negocio.png`.
 
@@ -110,4 +110,4 @@ Archivos: `resultados/caso_negocio_resumen.csv`, `resultados/caso_negocio_por_bl
 | `resultados/equidad.csv` | Auditoría de equidad |
 | `resultados/caso_negocio_resumen.csv`, `caso_negocio_por_bloque.csv`, `fig_caso_negocio.png` | Caso de negocio (nuevo) |
 | `resultados/resumen_criterios.csv` | Tabla final de 23 criterios de aprobación |
-| `informe/informe.tex` / `informe.pdf` | Informe narrativo completo con todo lo anterior integrado |
+| `informe.pdf` | Informe narrativo completo con todo lo anterior integrado |
