@@ -15,7 +15,7 @@ notebooks/     # un notebook por etapa del pipeline (ver abajo)
 src/           # código reutilizable (src/paths.py con las rutas centralizadas)
 artifacts/     # modelos serializados (modelo_calibrado.pkl)
 resultados/    # figuras y tablas finales
-informe/       # informe completo en LaTeX (.tex + .pdf)
+informe.pdf    # informe completo del proyecto
 documents/     # enunciado del proyecto
 ```
 
@@ -39,14 +39,14 @@ Cada notebook lee la salida en disco del anterior; se ejecutan en orden desde la
 
 | Documento | Contenido |
 |---|---|
-| [`informe/informe.pdf`](informe/informe.pdf) (`.tex` fuente en la misma carpeta) | Informe completo: problema, objetivos, arquitectura, modelado, drift, equidad, caso de negocio (síntesis), bibliografía |
+| [`informe.pdf`](informe.pdf) | Informe completo: problema, objetivos, arquitectura, modelado, drift, equidad, caso de negocio (síntesis), bibliografía |
 | [`README_DATA_DRIFT.md`](README_DATA_DRIFT.md) | Documentación técnica del módulo de data/concept drift: metodología, estrategias E1–E4, resultados, **limitaciones conocidas** |
 | [`README_CASO_NEGOCIO.md`](README_CASO_NEGOCIO.md) | Caso de negocio explicado a fondo: de dónde sale cada número, por qué el ahorro crece con el tiempo, qué queda fuera del cálculo |
 | [`README_CAMBIOS.md`](README_CAMBIOS.md) | Registro de los fixes de fuga de información y de la fusión con la reorganización de `notebooks/` |
 
 ## Estado de las métricas de éxito (última corrida)
 
-**18 de 23 criterios cuantitativos se cumplen.** Los 5 que no, con su explicación y mitigación propuesta, están documentados en detalle en [`README_DATA_DRIFT.md` §9](README_DATA_DRIFT.md#9-limitaciones-conocidas-del-módulo-de-drift) y en la Sección 13.1 del informe:
+**18 de 23 criterios cuantitativos se cumplen.** Los 5 que no, con su explicación y mitigación propuesta, están documentados en detalle en [`README_DATA_DRIFT.md` §9](README_DATA_DRIFT.md#9-limitaciones-conocidas-del-módulo-de-drift). Esta lista es más granular que la Sección 10 del informe, que reporta el resultado agregado sobre las 6 métricas de éxito principales (5 de 6 cumplidas; la única excepción es el costo esperado en el escenario de sensibilidad optimista, que corresponde al punto "Costo esperado" de esta misma lista):
 
 - **Brier score** (0.0963 vs. meta ≤0.095) — acotado por el techo de discriminación del problema (ROC-AUC ≈0.67), consistente con la literatura de reingreso hospitalario.
 - **Costo esperado, escenario de sensibilidad e=0.38** — pierde por un margen pequeño frente a "intervenir a todos" solo en ese escenario extremo/optimista.
